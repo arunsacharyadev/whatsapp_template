@@ -18,6 +18,8 @@ enum ChatElement {
 
 List<CameraDescription> cameras;
 
+typedef VoidCallback = void Function();
+
 class UtilFunctions {
   static logError({String code, String description, StackTrace stackTrace}) {
     debugPrint(

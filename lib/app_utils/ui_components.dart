@@ -2,12 +2,9 @@ import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:whatsapp_template/app_screens/home/tabs/chat_tab.dart';
 import 'package:whatsapp_template/app_utils/app_theme.dart';
 import 'package:whatsapp_template/app_utils/size_config.dart';
 import 'package:whatsapp_template/app_utils/util_functions.dart';
-
-typedef VoidCallback = void Function();
 
 class CircularButton extends StatelessWidget {
   final double width;
@@ -343,6 +340,16 @@ class UiComponents {
           ),
         );
         break;
+      case ChatElement.audio:
+        return Padding(
+          padding: const EdgeInsets.only(right: 5.0),
+          child: Icon(
+            Icons.volume_up,
+            size: SizeConfig.textScaleFactor * 20.0,
+            color: AppTheme.greyColor,
+          ),
+        );
+        break;
       case ChatElement.missedVoiceCall:
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -390,14 +397,11 @@ class UiComponents {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
       leading: CircleAvatar(
-        radius: 25.0,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(40),
-          child: Image.asset(
-            chatData['contactProfilePic'].toString(),
-            fit: BoxFit.cover,
-          ),
-        ),
+        backgroundColor: Colors.grey,
+        backgroundImage: (chatData['contactProfilePic'].toString().isNotEmpty)
+            ? AssetImage('${chatData['contactProfilePic']}')
+            : AssetImage('assets/profiles/person_dp.png'),
+        radius: SizeConfig.textScaleFactor * 28.0,
       ),
       title: Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
