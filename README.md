@@ -1,4 +1,4 @@
-# whatsapp_template
+# WhatsApp_template
 
 Building a WhatsApp Clone in flutter
 

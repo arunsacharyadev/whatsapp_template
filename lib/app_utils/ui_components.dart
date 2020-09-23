@@ -67,46 +67,6 @@ class UiComponents {
     );
   }
 
-  static Widget buildSettingsListTile({
-    @required BuildContext context,
-    Widget leading,
-    IconData leadingIcon,
-    String leadingImage,
-    String title,
-    String subtitle,
-    Widget trailing,
-    EdgeInsetsGeometry contentPadding,
-    void callback(),
-  }) {
-    return ListTile(
-      leading: (leading != null)
-          ? leading
-          : (leadingIcon != null)
-              ? AspectRatio(
-                  aspectRatio: SizeConfig.textScaleFactor * 0.6,
-                  child: Icon(
-                    leadingIcon,
-                    size: SizeConfig.textScaleFactor * 25,
-                    color: Theme.of(context).accentIconTheme.color,
-                  ),
-                )
-              : (leadingImage != null)
-                  ? AspectRatio(
-                      aspectRatio: SizeConfig.textScaleFactor * 0.5,
-                      child: SvgPicture.asset(
-                        leadingImage.toString(),
-                        color: Theme.of(context).accentIconTheme.color,
-                      ),
-                    )
-                  : null,
-      title: Text(title.toString()),
-      contentPadding: contentPadding,
-      subtitle: (subtitle != null) ? Text(subtitle.toString()) : null,
-      trailing: trailing,
-      onTap: callback,
-    );
-  }
-
   static Widget buildSwitch({
     @required ValueNotifier<bool> valueNotifier,
     @required void callback(bool),
@@ -268,6 +228,46 @@ class UiComponents {
         });
   }
 
+  static Widget buildSettingsListTile({
+    @required BuildContext context,
+    Widget leading,
+    IconData leadingIcon,
+    String leadingImage,
+    String title,
+    String subtitle,
+    Widget trailing,
+    EdgeInsetsGeometry contentPadding,
+    void callback(),
+  }) {
+    return ListTile(
+      leading: (leading != null)
+          ? leading
+          : (leadingIcon != null)
+              ? AspectRatio(
+                  aspectRatio: SizeConfig.textScaleFactor * 0.6,
+                  child: Icon(
+                    leadingIcon,
+                    size: SizeConfig.textScaleFactor * 25,
+                    color: Theme.of(context).accentIconTheme.color,
+                  ),
+                )
+              : (leadingImage != null)
+                  ? AspectRatio(
+                      aspectRatio: SizeConfig.textScaleFactor * 0.5,
+                      child: SvgPicture.asset(
+                        leadingImage.toString(),
+                        color: Theme.of(context).accentIconTheme.color,
+                      ),
+                    )
+                  : null,
+      title: Text(title.toString()),
+      contentPadding: contentPadding,
+      subtitle: (subtitle != null) ? Text(subtitle.toString()) : null,
+      trailing: trailing,
+      onTap: callback,
+    );
+  }
+
   static buildChatStatus(var chatStatus) {
     switch (chatStatus) {
       case ChatStatus.sent:
@@ -360,7 +360,7 @@ class UiComponents {
               child: Icon(
                 Icons.phone_missed,
                 size: SizeConfig.textScaleFactor * 20.0,
-                color: Colors.redAccent,
+                color: AppTheme.redAccent,
               ),
             ),
             Text('Missed Voice Call'),
@@ -377,7 +377,7 @@ class UiComponents {
               child: Icon(
                 Icons.missed_video_call,
                 size: SizeConfig.textScaleFactor * 24.0,
-                color: Colors.redAccent,
+                color: AppTheme.redAccent,
               ),
             ),
             Text('Missed Video Call'),
@@ -386,6 +386,108 @@ class UiComponents {
         break;
       default:
         return Container();
+    }
+  }
+
+  static buildCallStatus(BuildContext context, var callStatus) {
+    switch (callStatus) {
+      case CallStatus.call_made:
+        return Padding(
+          padding: const EdgeInsets.only(right: 5.0),
+          child: Icon(
+            Icons.call_made,
+            size: SizeConfig.textScaleFactor * 20.0,
+            color: Theme
+                .of(context)
+                .floatingActionButtonTheme
+                .backgroundColor,
+          ),
+        );
+        break;
+      case CallStatus.call_received:
+        return Padding(
+          padding: const EdgeInsets.only(right: 5.0),
+          child: Icon(
+            Icons.call_received,
+            size: SizeConfig.textScaleFactor * 20.0,
+            color: Theme
+                .of(context)
+                .floatingActionButtonTheme
+                .backgroundColor,
+          ),
+        );
+        break;
+      case CallStatus.call_missed_incoming:
+        return Padding(
+          padding: const EdgeInsets.only(right: 5.0),
+          child: Icon(
+            Icons.call_received,
+            size: SizeConfig.textScaleFactor * 20.0,
+            color: AppTheme.redAccent,
+          ),
+        );
+        break;
+      case CallStatus.call_missed_outgoing:
+        return Padding(
+          padding: const EdgeInsets.only(right: 5.0),
+          child: Icon(
+            Icons.call_made,
+            size: SizeConfig.textScaleFactor * 20.0,
+            color: AppTheme.redAccent,
+          ),
+        );
+        break;
+      case CallStatus.call_merge:
+        return Padding(
+          padding: const EdgeInsets.only(right: 5.0),
+          child: Icon(
+            Icons.call_merge,
+            size: SizeConfig.textScaleFactor * 20.0,
+            color: Theme
+                .of(context)
+                .floatingActionButtonTheme
+                .backgroundColor,
+          ),
+        );
+        break;
+      case CallStatus.call_split:
+        return Padding(
+          padding: const EdgeInsets.only(right: 5.0),
+          child: Icon(
+            Icons.call_split,
+            size: SizeConfig.textScaleFactor * 20.0,
+            color: Theme
+                .of(context)
+                .floatingActionButtonTheme
+                .backgroundColor,
+          ),
+        );
+        break;
+      default:
+        return Container();
+        break;
+    }
+  }
+
+  static buildCallType(BuildContext context, var callType) {
+    switch (callType) {
+      case CallType.voice:
+        return Icon(
+          Icons.call,
+          size: SizeConfig.textScaleFactor * 24.0,
+          color: AppTheme.tealGreenLight,
+        );
+        break;
+      case CallType.video:
+        return Icon(
+          Icons.videocam,
+          size: SizeConfig.textScaleFactor * 24.0,
+          color: AppTheme.tealGreenLight,
+        );
+        break;
+      default:
+        return Container();
+        break;
     }
   }
 
@@ -449,12 +551,66 @@ class UiComponents {
             badgeContent: Text(
               chatData['chatNotificationCount'].toString(),
               style: TextStyle(
-                color: Theme.of(context).scaffoldBackgroundColor,
+                color: Theme
+                    .of(context)
+                    .scaffoldBackgroundColor,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  static Widget buildCallListTile({
+    @required BuildContext context,
+    int index,
+    Map<String, dynamic> callData,
+  }) {
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+      leading: CircleAvatar(
+        backgroundColor: Colors.grey,
+        backgroundImage: (callData['contactProfilePic']
+            .toString()
+            .isNotEmpty)
+            ? AssetImage('${callData['contactProfilePic']}')
+            : AssetImage('assets/profiles/person_dp.png'),
+        radius: SizeConfig.textScaleFactor * 28.0,
+      ),
+      title: Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Text(
+          callData['contactName'].toString(),
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+      subtitle: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          buildCallStatus(context, callData['callStatus']),
+          Flexible(
+            child: Text(
+              "${(callData['callFrequency'] != null &&
+                  int.parse('${callData['callFrequency']}') > 1)
+                  ? "(${callData['callFrequency']})"
+                  : ""} ${callData['callTime']}",
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+      trailing: buildCallType(context, callData['callType']),
+    );
+  }
+
+  static Widget noDataFound([String message = ""]) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Center(
+        child: Text(message.isNotEmpty ? "$message" : "No Data Found"),
       ),
     );
   }

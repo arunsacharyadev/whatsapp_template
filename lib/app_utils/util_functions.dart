@@ -16,6 +16,20 @@ enum ChatElement {
   missedVideoCall
 }
 
+enum CallStatus {
+  call_made,
+  call_received,
+  call_missed_incoming,
+  call_missed_outgoing,
+  call_merge,
+  call_split,
+}
+
+enum CallType {
+  voice,
+  video,
+}
+
 List<CameraDescription> cameras;
 
 typedef VoidCallback = void Function();

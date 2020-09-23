@@ -116,19 +116,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         _buildTab(
                           tabIndexNotifier: _tabIndexNotifier,
                           title: "chats".toUpperCase(),
-                          currentIndex: 1,
-                          notificationCount: 0,
+                          currentTabIndex: 1,
+                          notificationCount: 1,
                         ),
                         _buildTab(
                           tabIndexNotifier: _tabIndexNotifier,
                           title: "status".toUpperCase(),
-                          currentIndex: 2,
+                          currentTabIndex: 2,
                           notificationCount: 3,
                         ),
                         _buildTab(
                           tabIndexNotifier: _tabIndexNotifier,
                           title: "calls".toUpperCase(),
-                          currentIndex: 3,
+                          currentTabIndex: 3,
                           notificationCount: 4,
                         ),
                       ],
@@ -315,13 +315,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Tab _buildTab({
     @required ValueNotifier<int> tabIndexNotifier,
     @required String title,
-    @required int currentIndex,
+    @required int currentTabIndex,
     int notificationCount: 0,
   }) {
     return Tab(
       child: ValueListenableBuilder(
         valueListenable: tabIndexNotifier,
-        builder: (context, index, _) {
+        builder: (context, tabIndex, _) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -329,22 +329,43 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             children: [
               Flexible(child: Text(title.toString())),
               if (notificationCount > 0) SizedBox(width: 5.0),
-              Badge(
-                animationDuration: Duration(
-                  milliseconds: 200,
-                ),
-                animationType: BadgeAnimationType.fade,
-                showBadge: notificationCount > 0 ? true : false,
-                badgeContent: Text(
-                  notificationCount.toString(),
-                  style: TextStyle(
-                    color: Colors.black,
+              if (currentTabIndex == 2 && (tabIndex == currentTabIndex))
+                Badge(
+                  animationDuration: Duration(
+                    milliseconds: 200,
                   ),
+                  animationType: BadgeAnimationType.fade,
+                  badgeColor: (tabIndex == currentTabIndex)
+                      ? Theme.of(context).indicatorColor
+                      : Colors.grey,
                 ),
-                badgeColor: (index == currentIndex)
-                    ? Theme.of(context).indicatorColor
-                    : Colors.grey,
-              ),
+              if (currentTabIndex == 2 && ((tabIndex != currentTabIndex)))
+                Badge(
+                  animationDuration: Duration(
+                    milliseconds: 200,
+                  ),
+                  animationType: BadgeAnimationType.fade,
+                  badgeColor: (tabIndex == currentTabIndex)
+                      ? Theme.of(context).indicatorColor
+                      : Colors.grey,
+                ),
+              if (currentTabIndex != 2)
+                Badge(
+                  animationDuration: Duration(
+                    milliseconds: 200,
+                  ),
+                  animationType: BadgeAnimationType.fade,
+                  showBadge: notificationCount > 0 ? true : false,
+                  badgeContent: Text(
+                    notificationCount.toString(),
+                    style: TextStyle(
+                      color: Theme.of(context).appBarTheme.color,
+                    ),
+                  ),
+                  badgeColor: (tabIndex == currentTabIndex)
+                      ? Theme.of(context).indicatorColor
+                      : Colors.grey,
+                ),
             ],
           );
         },

@@ -8,6 +8,7 @@ class AppTheme {
   static Color chatBackground = 'ECE5DD'.toHexColor();
   static Color checkMarkBlue = '34B7F1'.toHexColor();
   static Color greyColor = Colors.grey;
+  static Color redAccent = Colors.redAccent;
 
   static get darkTheme => ThemeData(
         brightness: Brightness.dark,
