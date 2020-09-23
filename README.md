@@ -4,6 +4,10 @@ Building a WhatsApp Clone in flutter
 
 # Screenshots
 
+![](screenshots/chat_light_theme.png) &emsp; ![](screenshots/chat_dark_theme.png)
+ 
+ chat_light_theme &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; chat_dark_theme
+
 
 ## Getting Started
 
