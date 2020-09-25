@@ -88,10 +88,8 @@ class _StatusTabState extends State<StatusTab> {
                         child: Text(
                           "Recent updates",
                           style: TextStyle(
-                            color: (Theme
-                                .of(context)
-                                .brightness ==
-                                Brightness.light)
+                            color: (Theme.of(context).brightness ==
+                                    Brightness.light)
                                 ? Colors.grey.withOpacity(0.8)
                                 : Colors.white60,
                             fontWeight: FontWeight.w500,
