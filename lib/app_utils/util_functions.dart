@@ -39,8 +39,8 @@ void logError({String code, String description, StackTrace stackTrace}) {
 }
 
 /// ## get [ThemeMode] By Index
-ThemeMode getThemeModeByIndex(int index) {
-  switch (index) {
+ThemeMode getThemeModeByIndex(index) {
+  switch (int.parse(index.toString())) {
     case 0:
       return ThemeMode.system;
       break;

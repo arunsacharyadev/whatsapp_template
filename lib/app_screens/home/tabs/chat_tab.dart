@@ -20,9 +20,9 @@ class _ChatTabState extends State<ChatTab> {
                 List<Map<String, dynamic>> _chatData = [];
                 _chatData = snapshot.data;
                 return ListView.separated(
-                  physics: BouncingScrollPhysics(),
                   key: PageStorageKey('chatTabKey'),
                   shrinkWrap: true,
+                  physics: BouncingScrollPhysics(),
                   itemCount: _chatData.length,
                   itemBuilder: (context, index) {
                     return BuildChatListTile(

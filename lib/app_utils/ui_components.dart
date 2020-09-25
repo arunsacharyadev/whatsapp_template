@@ -40,9 +40,10 @@ class BuildCircularButton extends StatelessWidget {
           shape: BoxShape.circle,
         ),
         child: IconButton(
+          padding: EdgeInsets.zero,
           icon: icon,
           color: iconColor,
-          onPressed: onPressed,
+          onPressed: onPressed != null ? onPressed : () {},
         ),
       ),
     );
@@ -51,7 +52,7 @@ class BuildCircularButton extends StatelessWidget {
 
 /// Build Heading
 class BuildHeading extends StatelessWidget {
-  /// ## Creates Heading
+  /// ## Creates a Heading
   const BuildHeading({
     Key key,
     @required this.context,
@@ -107,9 +108,9 @@ class BuildSwitch extends StatelessWidget {
   }
 }
 
-/// Build Radio List Tile
+/// Build RadioListTile
 class BuildRadioListTile extends StatelessWidget {
-  /// ## Creates a Radio List Tile
+  /// ## Creates a RadioListTile
   const BuildRadioListTile({
     Key key,
     @required this.title,
@@ -144,6 +145,20 @@ class BuildRadioListTile extends StatelessWidget {
       },
     );
   }
+}
+
+/// ## build PopupMenuItem
+PopupMenuItem buildPopupMenuItem({
+  @required String title,
+  VoidCallback callback,
+}) {
+  return PopupMenuItem(
+    child: ListTile(
+      title: Text(title.toString()),
+      visualDensity: VisualDensity.compact,
+      onTap: callback,
+    ),
+  );
 }
 
 /// Build Settings List Tile

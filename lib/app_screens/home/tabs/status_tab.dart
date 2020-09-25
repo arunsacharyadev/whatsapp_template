@@ -34,13 +34,38 @@ class _StatusTabState extends State<StatusTab> {
                   children: [
                     ListTile(
                       contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.grey,
-                        backgroundImage:
-                            (_myStatus['statusPic'].toString().isNotEmpty)
-                                ? AssetImage('${_myStatus['statusPic']}')
-                                : AssetImage('assets/profiles/person_dp.png'),
-                        radius: SizeConfig.textScaleFactor * 28.0,
+                      leading: AbsorbPointer(
+                        absorbing: true,
+                        ignoringSemantics: false,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          overflow: Overflow.visible,
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.grey,
+                              backgroundImage: (_myStatus['statusPic']
+                                      .toString()
+                                      .isNotEmpty)
+                                  ? AssetImage('${_myStatus['statusPic']}')
+                                  : AssetImage('assets/profiles/person_dp.png'),
+                              radius: SizeConfig.textScaleFactor * 28.0,
+                            ),
+                            Positioned(
+                              bottom: -5.0,
+                              right: -5.0,
+                              child: BuildCircularButton(
+                                backgroundColor: Theme.of(context)
+                                    .floatingActionButtonTheme
+                                    .backgroundColor,
+                                height: 25.0,
+                                width: 25.0,
+                                icon: Icon(
+                                  Icons.add,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       title: Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
@@ -50,10 +75,14 @@ class _StatusTabState extends State<StatusTab> {
                           (_myStatus['StatusTime'].toString().isNotEmpty)
                               ? _myStatus['StatusTime'].toString()
                               : "Tap to add status update"),
+                      onTap: () {},
                     ),
                     Container(
+                      margin: EdgeInsets.symmetric(vertical: 5.0),
                       width: double.infinity,
-                      color: (Theme.of(context).brightness == Brightness.light)
+                      color: (Theme
+                          .of(context)
+                          .brightness == Brightness.light)
                           ? AppTheme.chatBackground.withOpacity(0.45)
                           : null,
                       child: Padding(
@@ -61,8 +90,10 @@ class _StatusTabState extends State<StatusTab> {
                         child: Text(
                           "Recent updates",
                           style: TextStyle(
-                            color: (Theme.of(context).brightness ==
-                                    Brightness.light)
+                            color: (Theme
+                                .of(context)
+                                .brightness ==
+                                Brightness.light)
                                 ? Colors.grey.withOpacity(0.8)
                                 : Colors.white60,
                             fontWeight: FontWeight.w500,
@@ -108,8 +139,11 @@ class _StatusTabState extends State<StatusTab> {
                       },
                     ),
                     Container(
+                      margin: EdgeInsets.symmetric(vertical: 5.0),
                       width: double.infinity,
-                      color: (Theme.of(context).brightness == Brightness.light)
+                      color: (Theme
+                          .of(context)
+                          .brightness == Brightness.light)
                           ? AppTheme.chatBackground.withOpacity(0.45)
                           : null,
                       child: Padding(
@@ -117,8 +151,10 @@ class _StatusTabState extends State<StatusTab> {
                         child: Text(
                           "Viewed updates",
                           style: TextStyle(
-                            color: (Theme.of(context).brightness ==
-                                    Brightness.light)
+                            color: (Theme
+                                .of(context)
+                                .brightness ==
+                                Brightness.light)
                                 ? Colors.grey.withOpacity(0.8)
                                 : Colors.white60,
                             fontWeight: FontWeight.w500,
