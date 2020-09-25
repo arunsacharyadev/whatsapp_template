@@ -90,9 +90,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ],
                 bottom: TabBar(
                   isScrollable:
-                  SizeConfig.screenOrientation == Orientation.portrait
-                      ? true
-                      : false,
+                      SizeConfig.screenOrientation == Orientation.portrait
+                          ? true
+                          : false,
                   controller: _tabController,
                   labelColor: Theme.of(context).indicatorColor,
                   unselectedLabelColor: Colors.grey,
