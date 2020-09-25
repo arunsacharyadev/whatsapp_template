@@ -137,9 +137,7 @@ class _StatusTabState extends State<StatusTab> {
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 5.0),
                       width: double.infinity,
-                      color: (Theme
-                          .of(context)
-                          .brightness == Brightness.light)
+                      color: (Theme.of(context).brightness == Brightness.light)
                           ? AppTheme.chatBackground.withOpacity(0.45)
                           : null,
                       child: Padding(

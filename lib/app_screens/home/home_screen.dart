@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:whatsapp_template/app_screens/home/tabs/call_tab.dart';
@@ -62,6 +63,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return SafeArea(
       child: Scaffold(
         body: NestedScrollView(
+          floatHeaderSlivers: true,
+          physics: BouncingScrollPhysics(),
           headerSliverBuilder: (BuildContext context, bool value) {
             return [
               SliverAppBar(
@@ -69,7 +72,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 pinned: true,
                 floating: true,
                 snap: true,
-                forceElevated: value,
                 actions: [
                   IconButton(
                     icon: Icon(Icons.search),
@@ -88,9 +90,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ],
                 bottom: TabBar(
                   isScrollable:
-                      SizeConfig.screenOrientation == Orientation.portrait
-                          ? true
-                          : false,
+                  SizeConfig.screenOrientation == Orientation.portrait
+                      ? true
+                      : false,
                   controller: _tabController,
                   labelColor: Theme.of(context).indicatorColor,
                   unselectedLabelColor: Colors.grey,
