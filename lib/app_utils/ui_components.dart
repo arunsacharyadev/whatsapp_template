@@ -195,8 +195,8 @@ class BuildSettingsListTile extends StatelessWidget {
                         leadingImage.toString(),
                         color: Theme.of(context).accentIconTheme.color,
                       ),
-      )
-          : null,
+                    )
+                  : null,
       title: Text(title.toString()),
       contentPadding: contentPadding,
       subtitle: (subtitle != null) ? Text(subtitle.toString()) : null,
@@ -241,7 +241,7 @@ class BuildChatListTile extends StatelessWidget {
   buildChatStatus(var chatStatus) {
     switch (chatStatus) {
 
-    /// Sent
+      /// Sent
       case ChatStatus.sent:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -253,7 +253,7 @@ class BuildChatListTile extends StatelessWidget {
         );
         break;
 
-    /// Delivered
+      /// Delivered
       case ChatStatus.delivered:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -266,7 +266,7 @@ class BuildChatListTile extends StatelessWidget {
         );
         break;
 
-    /// Read
+      /// Read
       case ChatStatus.read:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -288,7 +288,7 @@ class BuildChatListTile extends StatelessWidget {
   buildChatElement(var chatElement) {
     switch (chatElement) {
 
-    /// Photo
+      /// Photo
       case ChatElement.photo:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -300,7 +300,7 @@ class BuildChatListTile extends StatelessWidget {
         );
         break;
 
-    /// Document
+      /// Document
       case ChatElement.document:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -312,7 +312,7 @@ class BuildChatListTile extends StatelessWidget {
         );
         break;
 
-    /// Video
+      /// Video
       case ChatElement.video:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -324,7 +324,7 @@ class BuildChatListTile extends StatelessWidget {
         );
         break;
 
-    /// Audio
+      /// Audio
       case ChatElement.audio:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -336,7 +336,7 @@ class BuildChatListTile extends StatelessWidget {
         );
         break;
 
-    /// Missed voice call
+      /// Missed voice call
       case ChatElement.missedVoiceCall:
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -355,7 +355,7 @@ class BuildChatListTile extends StatelessWidget {
         );
         break;
 
-    /// Missed video call
+      /// Missed video call
       case ChatElement.missedVideoCall:
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -384,9 +384,7 @@ class BuildChatListTile extends StatelessWidget {
       contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
       leading: CircleAvatar(
         backgroundColor: Colors.grey,
-        backgroundImage: (chatData['contactProfilePic']
-            .toString()
-            .isNotEmpty)
+        backgroundImage: (chatData['contactProfilePic'].toString().isNotEmpty)
             ? AssetImage('${chatData['contactProfilePic']}')
             : AssetImage('assets/profiles/person_dp.png'),
         radius: SizeConfig.textScaleFactor * 28.0,
@@ -405,9 +403,7 @@ class BuildChatListTile extends StatelessWidget {
           buildChatStatus(chatData['chatStatus']),
           buildChatElement(chatData['chatElement']),
           if (chatData['chatContent'] != null &&
-              chatData['chatContent']
-                  .toString()
-                  .isNotEmpty)
+              chatData['chatContent'].toString().isNotEmpty)
             Flexible(
               child: Text(
                 "${chatData['chatContent']}",
@@ -424,34 +420,22 @@ class BuildChatListTile extends StatelessWidget {
             "${chatData['chatTime']}",
             style: TextStyle(
               color: (chatData['chatNotificationCount'] != null &&
-                  chatData['chatNotificationCount']
-                      .toString()
-                      .isNotEmpty)
-                  ? Theme
-                  .of(context)
-                  .floatingActionButtonTheme
-                  .backgroundColor
+                      chatData['chatNotificationCount'].toString().isNotEmpty)
+                  ? Theme.of(context).floatingActionButtonTheme.backgroundColor
                   : null,
             ),
           ),
           Badge(
             showBadge: (chatData['chatNotificationCount'] != null &&
-                chatData['chatNotificationCount']
-                    .toString()
-                    .isNotEmpty)
+                    chatData['chatNotificationCount'].toString().isNotEmpty)
                 ? true
                 : false,
             badgeColor:
-            Theme
-                .of(context)
-                .floatingActionButtonTheme
-                .backgroundColor,
+                Theme.of(context).floatingActionButtonTheme.backgroundColor,
             badgeContent: Text(
               chatData['chatNotificationCount'].toString(),
               style: TextStyle(
-                color: Theme
-                    .of(context)
-                    .scaffoldBackgroundColor,
+                color: Theme.of(context).scaffoldBackgroundColor,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -496,37 +480,31 @@ class BuildCallListTile extends StatelessWidget {
   buildCallStatus(BuildContext context, var callStatus) {
     switch (callStatus) {
 
-    /// call made
+      /// call made
       case CallStatus.call_made:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
           child: Icon(
             Icons.call_made,
             size: SizeConfig.textScaleFactor * 20.0,
-            color: Theme
-                .of(context)
-                .floatingActionButtonTheme
-                .backgroundColor,
+            color: Theme.of(context).floatingActionButtonTheme.backgroundColor,
           ),
         );
         break;
 
-    /// call received
+      /// call received
       case CallStatus.call_received:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
           child: Icon(
             Icons.call_received,
             size: SizeConfig.textScaleFactor * 20.0,
-            color: Theme
-                .of(context)
-                .floatingActionButtonTheme
-                .backgroundColor,
+            color: Theme.of(context).floatingActionButtonTheme.backgroundColor,
           ),
         );
         break;
 
-    /// call missed incoming
+      /// call missed incoming
       case CallStatus.call_missed_incoming:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -538,7 +516,7 @@ class BuildCallListTile extends StatelessWidget {
         );
         break;
 
-    /// call missed outgoing
+      /// call missed outgoing
       case CallStatus.call_missed_outgoing:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -550,32 +528,26 @@ class BuildCallListTile extends StatelessWidget {
         );
         break;
 
-    /// call merge
+      /// call merge
       case CallStatus.call_merge:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
           child: Icon(
             Icons.call_merge,
             size: SizeConfig.textScaleFactor * 20.0,
-            color: Theme
-                .of(context)
-                .floatingActionButtonTheme
-                .backgroundColor,
+            color: Theme.of(context).floatingActionButtonTheme.backgroundColor,
           ),
         );
         break;
 
-    /// call split
+      /// call split
       case CallStatus.call_split:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
           child: Icon(
             Icons.call_split,
             size: SizeConfig.textScaleFactor * 20.0,
-            color: Theme
-                .of(context)
-                .floatingActionButtonTheme
-                .backgroundColor,
+            color: Theme.of(context).floatingActionButtonTheme.backgroundColor,
           ),
         );
         break;
@@ -589,7 +561,7 @@ class BuildCallListTile extends StatelessWidget {
   buildCallType(BuildContext context, var callType) {
     switch (callType) {
 
-    /// voice
+      /// voice
       case CallType.voice:
         return Icon(
           Icons.call,
@@ -598,7 +570,7 @@ class BuildCallListTile extends StatelessWidget {
         );
         break;
 
-    /// video
+      /// video
       case CallType.video:
         return Icon(
           Icons.videocam,
@@ -618,9 +590,7 @@ class BuildCallListTile extends StatelessWidget {
       contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
       leading: CircleAvatar(
         backgroundColor: Colors.grey,
-        backgroundImage: (callData['contactProfilePic']
-            .toString()
-            .isNotEmpty)
+        backgroundImage: (callData['contactProfilePic'].toString().isNotEmpty)
             ? AssetImage('${callData['contactProfilePic']}')
             : AssetImage('assets/profiles/person_dp.png'),
         radius: SizeConfig.textScaleFactor * 28.0,
@@ -639,10 +609,7 @@ class BuildCallListTile extends StatelessWidget {
           buildCallStatus(context, callData['callStatus']),
           Flexible(
             child: Text(
-              "${(callData['callFrequency'] != null &&
-                  int.parse('${callData['callFrequency']}') > 1)
-                  ? "(${callData['callFrequency']})"
-                  : ""} ${callData['callTime']}",
+              "${(callData['callFrequency'] != null && int.parse('${callData['callFrequency']}') > 1) ? "(${callData['callFrequency']})" : ""} ${callData['callTime']}",
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -725,9 +692,7 @@ Future<dynamic> showThemeDialog({
                   "CANCEL",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Theme
-                        .of(context)
-                        .secondaryHeaderColor,
+                    color: Theme.of(context).secondaryHeaderColor,
                   ),
                 ),
               ),
@@ -742,9 +707,7 @@ Future<dynamic> showThemeDialog({
                   "OK",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Theme
-                        .of(context)
-                        .secondaryHeaderColor,
+                    color: Theme.of(context).secondaryHeaderColor,
                   ),
                 ),
               ),

@@ -130,7 +130,7 @@ class _SettingsChatsScreenState extends State<SettingsChatsScreen> {
                       title: "Font Size",
                       contentPadding: EdgeInsets.only(left: 70.0),
                       subtitle: _fontSizeList[
-                      int.parse(HiveConfig.hiveReadData('FontSize'))],
+                          int.parse(HiveConfig.hiveReadData('FontSize'))],
                       callback: () async {
                         await showFontSizeDialog(
                           context: context,
