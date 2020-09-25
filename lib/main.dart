@@ -34,14 +34,14 @@ void main() async {
       }
     });
   } on CameraException catch (e) {
-    UtilFunctions.logError(code: e.code, description: e.description);
+    logError(code: e.code, description: e.description);
   } on HiveError catch (e) {
-    UtilFunctions.logError(description: e.message, stackTrace: e.stackTrace);
+    logError(description: e.message, stackTrace: e.stackTrace);
   }
   runApp(
     ChangeNotifierProvider<ThemeNotifier>(
-      create: (context) => ThemeNotifier(UtilFunctions.getThemeModeByIndex(
-          HiveConfig.hiveReadData('ThemeMode'))),
+      create: (context) => ThemeNotifier(
+          getThemeModeByIndex(HiveConfig.hiveReadData('ThemeMode'))),
       child: MyApp(),
     ),
   );

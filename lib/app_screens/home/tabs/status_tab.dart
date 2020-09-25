@@ -166,7 +166,7 @@ class _StatusTabState extends State<StatusTab> {
                   ],
                 );
               } else {
-                return UiComponents.noDataFound("No Status Data");
+                return NoRecordsFound("No Status Records");
               }
               break;
             case ConnectionState.waiting:

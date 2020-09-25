@@ -25,7 +25,7 @@ class _CallTabState extends State<CallTab> {
                   shrinkWrap: true,
                   itemCount: _callData.length,
                   itemBuilder: (context, index) {
-                    return UiComponents.buildCallListTile(
+                    return BuildCallListTile(
                       context: context,
                       index: index,
                       callData: _callData[index],
@@ -41,7 +41,7 @@ class _CallTabState extends State<CallTab> {
                   },
                 );
               } else {
-                return UiComponents.noDataFound("No Call Data");
+                return NoRecordsFound("No Call Records");
               }
               break;
             case ConnectionState.waiting:

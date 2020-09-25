@@ -27,12 +27,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       initialIndex: 1,
     );
     _tabIndexNotifier = ValueNotifier<int>(_tabController.index);
-    _fabActionNotifier = ValueNotifier<TabAction>(
-        UtilFunctions.getTabActionByIndex(_tabController.index));
+    _fabActionNotifier =
+        ValueNotifier<TabAction>(getTabActionByIndex(_tabController.index));
     _tabController.addListener(() {
       _tabIndexNotifier.value = _tabController.index;
-      _fabActionNotifier.value =
-          UtilFunctions.getTabActionByIndex(_tabController.index);
+      _fabActionNotifier.value = getTabActionByIndex(_tabController.index);
     });
     super.initState();
   }
@@ -156,10 +155,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     builder: (context, fabAction, _) {
                       if (_tabController.index !=
                               _tabController.previousIndex &&
-                          (UtilFunctions.getTabActionByIndex(
-                                      _tabController.previousIndex) ==
+                          (getTabActionByIndex(_tabController.previousIndex) ==
                                   fabAction ||
-                              UtilFunctions.getTabActionByIndex(
+                              getTabActionByIndex(
                                       _tabController.previousIndex) ==
                                   fabAction)) {
                         return TweenAnimationBuilder(
@@ -172,10 +170,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           builder: (context, value, _) {
                             return Transform.translate(
                               offset: Offset.fromDirection(
-                                  UtilFunctions.getRadiansFromDegree(
-                                      180.0 + 90.0),
-                                  value),
-                              child: CircularButton(
+                                  getRadiansFromDegree(180.0 + 90.0), value),
+                              child: BuildCircularButton(
                                 width: 50.0,
                                 height: 50.0,
                                 backgroundColor: 'ece5dd'.toHexColor(),
@@ -198,10 +194,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           builder: (context, value, _) {
                             return Transform.translate(
                               offset: Offset.fromDirection(
-                                  UtilFunctions.getRadiansFromDegree(
-                                      180.0 + 90.0),
-                                  value),
-                              child: CircularButton(
+                                  getRadiansFromDegree(180.0 + 90.0), value),
+                              child: BuildCircularButton(
                                 width: 50.0,
                                 height: 50.0,
                                 backgroundColor: 'ece5dd'.toHexColor(),
@@ -235,25 +229,34 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         builder: (BuildContext context, TabAction tabAction, _) {
           switch (tabAction) {
             case TabAction.chat:
-              return CircularButton(
+              return BuildCircularButton(
                 backgroundColor:
-                    Theme.of(context).floatingActionButtonTheme.backgroundColor,
+                Theme
+                    .of(context)
+                    .floatingActionButtonTheme
+                    .backgroundColor,
                 icon: Icon(Icons.chat),
                 onPressed: () {},
               );
               break;
             case TabAction.status:
-              return CircularButton(
+              return BuildCircularButton(
                 backgroundColor:
-                    Theme.of(context).floatingActionButtonTheme.backgroundColor,
+                Theme
+                    .of(context)
+                    .floatingActionButtonTheme
+                    .backgroundColor,
                 icon: Icon(Icons.camera_alt),
                 onPressed: () {},
               );
               break;
             case TabAction.call:
-              return CircularButton(
+              return BuildCircularButton(
                 backgroundColor:
-                    Theme.of(context).floatingActionButtonTheme.backgroundColor,
+                Theme
+                    .of(context)
+                    .floatingActionButtonTheme
+                    .backgroundColor,
                 icon: Icon(Icons.add_call),
                 onPressed: () {},
               );

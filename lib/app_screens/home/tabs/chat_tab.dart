@@ -25,7 +25,7 @@ class _ChatTabState extends State<ChatTab> {
                   shrinkWrap: true,
                   itemCount: _chatData.length,
                   itemBuilder: (context, index) {
-                    return UiComponents.buildChatListTile(
+                    return BuildChatListTile(
                       context: context,
                       index: index,
                       chatData: _chatData[index],
@@ -41,7 +41,7 @@ class _ChatTabState extends State<ChatTab> {
                   },
                 );
               } else {
-                return UiComponents.noDataFound("No Chat Data");
+                return NoRecordsFound("No Chat Records");
               }
               break;
             case ConnectionState.waiting:

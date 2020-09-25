@@ -1,12 +1,24 @@
 import 'package:badges/badges.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:whatsapp_template/app_utils/app_theme.dart';
 import 'package:whatsapp_template/app_utils/size_config.dart';
 import 'package:whatsapp_template/app_utils/util_functions.dart';
 
-class CircularButton extends StatelessWidget {
+/// Build Circular Button
+class BuildCircularButton extends StatelessWidget {
+  /// ## Creates a Circular Button
+  const BuildCircularButton({
+    Key key,
+    this.width: 60,
+    this.height: 60,
+    this.elevation: 5.0,
+    @required this.backgroundColor,
+    @required this.icon,
+    this.iconColor: Colors.white,
+    this.onPressed,
+  }) : super(key: key);
+
   final double width;
   final double height;
   final double elevation;
@@ -14,17 +26,6 @@ class CircularButton extends StatelessWidget {
   final Icon icon;
   final Color iconColor;
   final VoidCallback onPressed;
-
-  const CircularButton(
-      {Key key,
-      this.width: 60,
-      this.height: 60,
-      this.elevation: 5.0,
-      @required this.backgroundColor,
-      @required this.icon,
-      this.iconColor: Colors.white,
-      this.onPressed})
-      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +49,19 @@ class CircularButton extends StatelessWidget {
   }
 }
 
-class UiComponents {
-  static Widget heading(
-      {@required BuildContext context, @required String title}) {
+/// Build Heading
+class BuildHeading extends StatelessWidget {
+  /// ## Creates Heading
+  const BuildHeading({
+    Key key,
+    @required this.context,
+    @required this.title,
+  }) : super(key: key);
+  final BuildContext context;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20.0, 20.0, 30.0, 10.0),
       child: Container(
@@ -66,11 +77,22 @@ class UiComponents {
       ),
     );
   }
+}
 
-  static Widget buildSwitch({
-    @required ValueNotifier<bool> valueNotifier,
-    @required void callback(bool),
-  }) {
+/// Build Switch
+class BuildSwitch extends StatelessWidget {
+  /// ## Creates a Switch
+  const BuildSwitch({
+    Key key,
+    @required this.valueNotifier,
+    @required this.callback,
+  }) : super(key: key);
+
+  final ValueNotifier<bool> valueNotifier;
+  final ValueChanged<bool> callback;
+
+  @override
+  Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: valueNotifier,
       builder: (context, value, _) {
@@ -83,14 +105,28 @@ class UiComponents {
       },
     );
   }
+}
 
-  static Widget buildRadioListTile({
-    @required String title,
-    @required ValueNotifier<dynamic> groupValueNotifier,
-    @required dynamic value,
-    @required void callback(dynamic),
-    ListTileControlAffinity controlAffinity: ListTileControlAffinity.leading,
-  }) {
+/// Build Radio List Tile
+class BuildRadioListTile extends StatelessWidget {
+  /// ## Creates a Radio List Tile
+  const BuildRadioListTile({
+    Key key,
+    @required this.title,
+    @required this.groupValueNotifier,
+    @required this.value,
+    @required this.callback,
+    this.controlAffinity: ListTileControlAffinity.leading,
+  }) : super(key: key);
+
+  final String title;
+  final ValueNotifier<dynamic> groupValueNotifier;
+  final dynamic value;
+  final ValueChanged<dynamic> callback;
+  final ListTileControlAffinity controlAffinity;
+
+  @override
+  Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: groupValueNotifier,
       builder: (context, groupValue, _) {
@@ -108,137 +144,38 @@ class UiComponents {
       },
     );
   }
+}
 
-  static Future<dynamic> showThemeDialog({
-    @required BuildContext context,
-    @required ValueNotifier<dynamic> groupValueNotifier,
-    void callback1(dynamic),
-    void callback2(dynamic),
-    void callback3(dynamic),
-  }) async {
-    return await showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            contentPadding: EdgeInsets.zero,
-            title: Text("Choose Theme"),
-            content: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  buildRadioListTile(
-                    title: "System default",
-                    groupValueNotifier: groupValueNotifier,
-                    value: 0,
-                    callback: callback1,
-                  ),
-                  buildRadioListTile(
-                    title: "Light",
-                    groupValueNotifier: groupValueNotifier,
-                    value: 1,
-                    callback: callback2,
-                  ),
-                  buildRadioListTile(
-                    title: "Dark",
-                    groupValueNotifier: groupValueNotifier,
-                    value: 2,
-                    callback: callback3,
-                  ),
-                ],
-              ),
-            ),
-            actions: [
-              InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-                  child: Text(
-                    "CANCEL",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).secondaryHeaderColor,
-                    ),
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.pop(context, "OK");
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-                  child: Text(
-                    "OK",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).secondaryHeaderColor,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        });
-  }
+/// Build Settings List Tile
+class BuildSettingsListTile extends StatelessWidget {
+  /// ## Creates a Settings List Tile
+  const BuildSettingsListTile({
+    Key key,
+    @required this.context,
+    this.leading,
+    this.leadingIcon,
+    this.leadingImage,
+    this.title,
+    this.subtitle,
+    this.trailing,
+    this.contentPadding,
+    this.callback,
+  })  : assert(leading == null || leadingIcon == null || leadingImage == null,
+            'Use one property either [leading] or [leadingIcon] or [leadingImage]'),
+        super(key: key);
 
-  static Future<dynamic> showFontSizeDialog({
-    @required BuildContext context,
-    @required ValueNotifier<dynamic> groupValueNotifier,
-    void callback1(dynamic),
-    void callback2(dynamic),
-    void callback3(dynamic),
-  }) async {
-    return await showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            contentPadding: EdgeInsets.zero,
-            title: Text("Font Size"),
-            content: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  buildRadioListTile(
-                    title: "Small",
-                    groupValueNotifier: groupValueNotifier,
-                    value: 0,
-                    callback: callback1,
-                  ),
-                  buildRadioListTile(
-                    title: "Medium",
-                    groupValueNotifier: groupValueNotifier,
-                    value: 1,
-                    callback: callback2,
-                  ),
-                  buildRadioListTile(
-                    title: "Large",
-                    groupValueNotifier: groupValueNotifier,
-                    value: 2,
-                    callback: callback3,
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
-  }
+  final BuildContext context;
+  final Widget leading;
+  final IconData leadingIcon;
+  final String leadingImage;
+  final String title;
+  final String subtitle;
+  final Widget trailing;
+  final EdgeInsetsGeometry contentPadding;
+  final GestureTapCallback callback;
 
-  static Widget buildSettingsListTile({
-    @required BuildContext context,
-    Widget leading,
-    IconData leadingIcon,
-    String leadingImage,
-    String title,
-    String subtitle,
-    Widget trailing,
-    EdgeInsetsGeometry contentPadding,
-    void callback(),
-  }) {
+  @override
+  Widget build(BuildContext context) {
     return ListTile(
       leading: (leading != null)
           ? leading
@@ -258,8 +195,8 @@ class UiComponents {
                         leadingImage.toString(),
                         color: Theme.of(context).accentIconTheme.color,
                       ),
-                    )
-                  : null,
+      )
+          : null,
       title: Text(title.toString()),
       contentPadding: contentPadding,
       subtitle: (subtitle != null) ? Text(subtitle.toString()) : null,
@@ -267,9 +204,44 @@ class UiComponents {
       onTap: callback,
     );
   }
+}
 
-  static buildChatStatus(var chatStatus) {
+/// Build Chat List Tile
+class BuildChatListTile extends StatelessWidget {
+  /// ## Creates a Chat List Tile
+  const BuildChatListTile({
+    Key key,
+    @required this.context,
+    @required this.index,
+    @required this.chatData,
+  }) : super(key: key);
+
+  /// ## context
+  final BuildContext context;
+
+  /// ## index
+  final int index;
+
+  /// ## chat Data
+  /// Data should be as per the below format
+  /// ```
+  /// {
+  ///   "contactName": "Flutter Developer",
+  ///   "contactProfilePic": "assets/profiles/profile6.jpeg",
+  ///   "chatContent": "WhatsApp Clone is ready 👍",
+  ///   "chatElement": ChatElement.text,
+  ///   "chatStatus": "",
+  ///   "chatTime": "09:08 PM",
+  ///   "chatNotificationCount": "1"
+  /// }
+  /// ```
+  final Map<String, dynamic> chatData;
+
+  /// Build chat status
+  buildChatStatus(var chatStatus) {
     switch (chatStatus) {
+
+    /// Sent
       case ChatStatus.sent:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -280,6 +252,8 @@ class UiComponents {
           ),
         );
         break;
+
+    /// Delivered
       case ChatStatus.delivered:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -291,6 +265,8 @@ class UiComponents {
           ),
         );
         break;
+
+    /// Read
       case ChatStatus.read:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -308,8 +284,11 @@ class UiComponents {
     }
   }
 
-  static buildChatElement(var chatElement) {
+  /// build chat element
+  buildChatElement(var chatElement) {
     switch (chatElement) {
+
+    /// Photo
       case ChatElement.photo:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -320,6 +299,8 @@ class UiComponents {
           ),
         );
         break;
+
+    /// Document
       case ChatElement.document:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -330,6 +311,8 @@ class UiComponents {
           ),
         );
         break;
+
+    /// Video
       case ChatElement.video:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -340,6 +323,8 @@ class UiComponents {
           ),
         );
         break;
+
+    /// Audio
       case ChatElement.audio:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -350,6 +335,8 @@ class UiComponents {
           ),
         );
         break;
+
+    /// Missed voice call
       case ChatElement.missedVoiceCall:
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -367,6 +354,8 @@ class UiComponents {
           ],
         );
         break;
+
+    /// Missed video call
       case ChatElement.missedVideoCall:
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -389,8 +378,125 @@ class UiComponents {
     }
   }
 
-  static buildCallStatus(BuildContext context, var callStatus) {
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+      leading: CircleAvatar(
+        backgroundColor: Colors.grey,
+        backgroundImage: (chatData['contactProfilePic']
+            .toString()
+            .isNotEmpty)
+            ? AssetImage('${chatData['contactProfilePic']}')
+            : AssetImage('assets/profiles/person_dp.png'),
+        radius: SizeConfig.textScaleFactor * 28.0,
+      ),
+      title: Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Text(
+          chatData['contactName'].toString(),
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+      subtitle: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          buildChatStatus(chatData['chatStatus']),
+          buildChatElement(chatData['chatElement']),
+          if (chatData['chatContent'] != null &&
+              chatData['chatContent']
+                  .toString()
+                  .isNotEmpty)
+            Flexible(
+              child: Text(
+                "${chatData['chatContent']}",
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+        ],
+      ),
+      trailing: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            "${chatData['chatTime']}",
+            style: TextStyle(
+              color: (chatData['chatNotificationCount'] != null &&
+                  chatData['chatNotificationCount']
+                      .toString()
+                      .isNotEmpty)
+                  ? Theme
+                  .of(context)
+                  .floatingActionButtonTheme
+                  .backgroundColor
+                  : null,
+            ),
+          ),
+          Badge(
+            showBadge: (chatData['chatNotificationCount'] != null &&
+                chatData['chatNotificationCount']
+                    .toString()
+                    .isNotEmpty)
+                ? true
+                : false,
+            badgeColor:
+            Theme
+                .of(context)
+                .floatingActionButtonTheme
+                .backgroundColor,
+            badgeContent: Text(
+              chatData['chatNotificationCount'].toString(),
+              style: TextStyle(
+                color: Theme
+                    .of(context)
+                    .scaffoldBackgroundColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Build Call List Tile
+class BuildCallListTile extends StatelessWidget {
+  /// ## Creates a Call List Tile
+  const BuildCallListTile({
+    Key key,
+    @required this.context,
+    @required this.index,
+    @required this.callData,
+  }) : super(key: key);
+
+  /// ## context
+  final BuildContext context;
+
+  /// ## index
+  final int index;
+
+  /// ## call Data
+  /// Data should be as per the below format
+  /// ```
+  /// {
+  ///   "contactName": "Flutter Developer",
+  ///   "contactProfilePic": "assets/profiles/profile6.jpeg",
+  ///   "callStatus": CallStatus.call_missed_incoming,
+  ///   "callFrequency": "2",
+  ///   "callTime": "September 14, 3:38 PM",
+  ///   "callType": CallType.voice
+  /// }
+  /// ```
+  final Map<String, dynamic> callData;
+
+  /// build call status
+  buildCallStatus(BuildContext context, var callStatus) {
     switch (callStatus) {
+
+    /// call made
       case CallStatus.call_made:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -404,6 +510,8 @@ class UiComponents {
           ),
         );
         break;
+
+    /// call received
       case CallStatus.call_received:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -417,6 +525,8 @@ class UiComponents {
           ),
         );
         break;
+
+    /// call missed incoming
       case CallStatus.call_missed_incoming:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -427,6 +537,8 @@ class UiComponents {
           ),
         );
         break;
+
+    /// call missed outgoing
       case CallStatus.call_missed_outgoing:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -437,6 +549,8 @@ class UiComponents {
           ),
         );
         break;
+
+    /// call merge
       case CallStatus.call_merge:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -450,6 +564,8 @@ class UiComponents {
           ),
         );
         break;
+
+    /// call split
       case CallStatus.call_split:
         return Padding(
           padding: const EdgeInsets.only(right: 5.0),
@@ -469,8 +585,11 @@ class UiComponents {
     }
   }
 
-  static buildCallType(BuildContext context, var callType) {
+  /// build call type
+  buildCallType(BuildContext context, var callType) {
     switch (callType) {
+
+    /// voice
       case CallType.voice:
         return Icon(
           Icons.call,
@@ -478,6 +597,8 @@ class UiComponents {
           color: AppTheme.tealGreenLight,
         );
         break;
+
+    /// video
       case CallType.video:
         return Icon(
           Icons.videocam,
@@ -491,83 +612,8 @@ class UiComponents {
     }
   }
 
-  static Widget buildChatListTile({
-    @required BuildContext context,
-    int index,
-    Map<String, dynamic> chatData,
-  }) {
-    return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
-      leading: CircleAvatar(
-        backgroundColor: Colors.grey,
-        backgroundImage: (chatData['contactProfilePic'].toString().isNotEmpty)
-            ? AssetImage('${chatData['contactProfilePic']}')
-            : AssetImage('assets/profiles/person_dp.png'),
-        radius: SizeConfig.textScaleFactor * 28.0,
-      ),
-      title: Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: Text(
-          chatData['contactName'].toString(),
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
-      subtitle: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          buildChatStatus(chatData['chatStatus']),
-          buildChatElement(chatData['chatElement']),
-          if (chatData['chatContent'] != null &&
-              chatData['chatContent'].toString().isNotEmpty)
-            Flexible(
-              child: Text(
-                "${chatData['chatContent']}",
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-        ],
-      ),
-      trailing: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            "${chatData['chatTime']}",
-            style: TextStyle(
-              color: (chatData['chatNotificationCount'] != null &&
-                      chatData['chatNotificationCount'].toString().isNotEmpty)
-                  ? Theme.of(context).floatingActionButtonTheme.backgroundColor
-                  : null,
-            ),
-          ),
-          Badge(
-            showBadge: (chatData['chatNotificationCount'] != null &&
-                    chatData['chatNotificationCount'].toString().isNotEmpty)
-                ? true
-                : false,
-            badgeColor:
-                Theme.of(context).floatingActionButtonTheme.backgroundColor,
-            badgeContent: Text(
-              chatData['chatNotificationCount'].toString(),
-              style: TextStyle(
-                color: Theme
-                    .of(context)
-                    .scaffoldBackgroundColor,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  static Widget buildCallListTile({
-    @required BuildContext context,
-    int index,
-    Map<String, dynamic> callData,
-  }) {
+  @override
+  Widget build(BuildContext context) {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
       leading: CircleAvatar(
@@ -605,13 +651,149 @@ class UiComponents {
       trailing: buildCallType(context, callData['callType']),
     );
   }
+}
 
-  static Widget noDataFound([String message = ""]) {
+/// No Records Found
+class NoRecordsFound extends StatelessWidget {
+  /// ## No Records Found
+  const NoRecordsFound([
+    this.message = "No Records Found",
+  ]);
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Center(
-        child: Text(message.isNotEmpty ? "$message" : "No Data Found"),
+        child: Text(message.toString()),
       ),
     );
   }
+}
+
+/// Show Theme Dialog
+Future<dynamic> showThemeDialog({
+  @required BuildContext context,
+  @required ValueNotifier<dynamic> groupValueNotifier,
+  ValueChanged<dynamic> callback1,
+  ValueChanged<dynamic> callback2,
+  ValueChanged<dynamic> callback3,
+}) async {
+  return await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.zero,
+          title: Text("Choose Theme"),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                BuildRadioListTile(
+                  title: "System default",
+                  groupValueNotifier: groupValueNotifier,
+                  value: 0,
+                  callback: callback1,
+                ),
+                BuildRadioListTile(
+                  title: "Light",
+                  groupValueNotifier: groupValueNotifier,
+                  value: 1,
+                  callback: callback2,
+                ),
+                BuildRadioListTile(
+                  title: "Dark",
+                  groupValueNotifier: groupValueNotifier,
+                  value: 2,
+                  callback: callback3,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+                child: Text(
+                  "CANCEL",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme
+                        .of(context)
+                        .secondaryHeaderColor,
+                  ),
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.pop(context, "OK");
+              },
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+                child: Text(
+                  "OK",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme
+                        .of(context)
+                        .secondaryHeaderColor,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      });
+}
+
+/// Show Font Size Dialog
+Future<dynamic> showFontSizeDialog({
+  @required BuildContext context,
+  @required ValueNotifier<dynamic> groupValueNotifier,
+  ValueChanged<dynamic> callback1,
+  ValueChanged<dynamic> callback2,
+  ValueChanged<dynamic> callback3,
+}) async {
+  return await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.zero,
+          title: Text("Font Size"),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                BuildRadioListTile(
+                  title: "Small",
+                  groupValueNotifier: groupValueNotifier,
+                  value: 0,
+                  callback: callback1,
+                ),
+                BuildRadioListTile(
+                  title: "Medium",
+                  groupValueNotifier: groupValueNotifier,
+                  value: 1,
+                  callback: callback2,
+                ),
+                BuildRadioListTile(
+                  title: "Large",
+                  groupValueNotifier: groupValueNotifier,
+                  value: 2,
+                  callback: callback3,
+                ),
+              ],
+            ),
+          ),
+        );
+      });
 }

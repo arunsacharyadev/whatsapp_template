@@ -69,13 +69,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    UiComponents.buildSettingsListTile(
+                    BuildSettingsListTile(
                       context: context,
                       leadingImage: 'assets/icons/encryption_key.svg',
                       title: "Account",
                       subtitle: "Privacy, security, change number",
                     ),
-                    UiComponents.buildSettingsListTile(
+                    BuildSettingsListTile(
                         context: context,
                         leadingIcon: Icons.chat,
                         title: "Chats",
@@ -88,25 +88,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                           );
                         }),
-                    UiComponents.buildSettingsListTile(
+                    BuildSettingsListTile(
                       context: context,
                       leadingIcon: Icons.notifications,
                       title: "Notifications",
                       subtitle: "Messages, group & call tones",
                     ),
-                    UiComponents.buildSettingsListTile(
+                    BuildSettingsListTile(
                       context: context,
                       leadingIcon: Icons.data_usage,
                       title: "Data and storage usage",
                       subtitle: "Network usage, auto-download",
                     ),
-                    UiComponents.buildSettingsListTile(
+                    BuildSettingsListTile(
                       context: context,
                       leadingIcon: Icons.help_outline,
                       title: "Help",
                       subtitle: "FAQ, contact us, privacy policy",
                     ),
-                    UiComponents.buildSettingsListTile(
+                    BuildSettingsListTile(
                       context: context,
                       leadingIcon: Icons.group,
                       title: "Invite a friend",

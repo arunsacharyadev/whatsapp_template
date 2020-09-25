@@ -69,15 +69,15 @@ class _SettingsChatsScreenState extends State<SettingsChatsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              UiComponents.heading(context: context, title: "Display"),
-              UiComponents.buildSettingsListTile(
+              BuildHeading(context: context, title: "Display"),
+              BuildSettingsListTile(
                   leadingImage: 'assets/icons/brightness.svg',
                   context: context,
                   title: "Theme",
                   subtitle: _themeList[
                       int.parse(HiveConfig.hiveReadData('ThemeMode'))],
                   callback: () async {
-                    await UiComponents.showThemeDialog(
+                    await showThemeDialog(
                       context: context,
                       groupValueNotifier: _themeGroupValueNotifier,
                     ).then((res) {
@@ -85,7 +85,7 @@ class _SettingsChatsScreenState extends State<SettingsChatsScreen> {
                         HiveConfig.hiveCreateData('ThemeMode',
                             _themeGroupValueNotifier.value.toString());
                         Provider.of<ThemeNotifier>(context, listen: false)
-                            .setThemeMode(UtilFunctions.getThemeModeByIndex(
+                            .setThemeMode(getThemeModeByIndex(
                                 _themeGroupValueNotifier.value));
                       } else {
                         _themeGroupValueNotifier.value =
@@ -93,30 +93,30 @@ class _SettingsChatsScreenState extends State<SettingsChatsScreen> {
                       }
                     });
                   }),
-              UiComponents.buildSettingsListTile(
+              BuildSettingsListTile(
                 context: context,
                 leadingIcon: Icons.wallpaper,
                 title: "Wallpaper",
               ),
               Divider(thickness: 0.6),
-              UiComponents.heading(context: context, title: "Chat Settings"),
-              UiComponents.buildSettingsListTile(
+              BuildHeading(context: context, title: "Chat Settings"),
+              BuildSettingsListTile(
                 context: context,
                 title: "Enter is send",
                 contentPadding: EdgeInsets.only(left: 70.0),
                 subtitle: "Enter key will send your message",
-                trailing: UiComponents.buildSwitch(
+                trailing: BuildSwitch(
                     valueNotifier: _switch1Notifier,
                     callback: (value) {
                       _switch1Notifier.value = value;
                     }),
               ),
-              UiComponents.buildSettingsListTile(
+              BuildSettingsListTile(
                 context: context,
                 title: "Media visibility",
                 contentPadding: EdgeInsets.only(left: 70.0),
                 subtitle: "Show newly downloaded media in your phone's gallery",
-                trailing: UiComponents.buildSwitch(
+                trailing: BuildSwitch(
                     valueNotifier: _switch2Notifier,
                     callback: (value) {
                       _switch2Notifier.value = value;
@@ -125,14 +125,14 @@ class _SettingsChatsScreenState extends State<SettingsChatsScreen> {
               ValueListenableBuilder(
                 valueListenable: _fontSizeGroupValueNotifier,
                 builder: (context, value, _) {
-                  return UiComponents.buildSettingsListTile(
+                  return BuildSettingsListTile(
                       context: context,
                       title: "Font Size",
                       contentPadding: EdgeInsets.only(left: 70.0),
                       subtitle: _fontSizeList[
-                          int.parse(HiveConfig.hiveReadData('FontSize'))],
+                      int.parse(HiveConfig.hiveReadData('FontSize'))],
                       callback: () async {
-                        await UiComponents.showFontSizeDialog(
+                        await showFontSizeDialog(
                           context: context,
                           groupValueNotifier: _fontSizeGroupValueNotifier,
                           callback1: (val) {
@@ -154,18 +154,18 @@ class _SettingsChatsScreenState extends State<SettingsChatsScreen> {
                       });
                 },
               ),
-              UiComponents.buildSettingsListTile(
+              BuildSettingsListTile(
                 context: context,
                 title: "App Language",
                 contentPadding: EdgeInsets.only(left: 70.0),
                 subtitle: "Phone's language (English)",
               ),
-              UiComponents.buildSettingsListTile(
+              BuildSettingsListTile(
                 context: context,
                 leadingIcon: Icons.backup,
                 title: "Chat backup",
               ),
-              UiComponents.buildSettingsListTile(
+              BuildSettingsListTile(
                 context: context,
                 leadingIcon: Icons.history,
                 title: "Chat history",
