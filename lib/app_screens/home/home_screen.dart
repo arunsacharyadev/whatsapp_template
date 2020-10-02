@@ -304,10 +304,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             case TabAction.chat:
               return BuildCircularButton(
                 backgroundColor:
-                Theme
-                    .of(context)
-                    .floatingActionButtonTheme
-                    .backgroundColor,
+                    Theme.of(context).floatingActionButtonTheme.backgroundColor,
                 icon: Icon(Icons.chat),
                 onPressed: () {
                   Navigator.push(
