@@ -130,3 +130,9 @@ bool isNumeric(input) {
     return true;
   }
 }
+
+String flattenPhoneNumber(String number) {
+  return number.replaceAllMapped(RegExp(r'^(\+)|\D'), (Match m) {
+    return m[0] == "+" ? "+" : "";
+  });
+}

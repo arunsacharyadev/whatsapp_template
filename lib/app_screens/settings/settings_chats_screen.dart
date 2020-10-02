@@ -14,13 +14,13 @@ class SettingsChatsScreen extends StatefulWidget {
 class _SettingsChatsScreenState extends State<SettingsChatsScreen> {
   @override
   void initState() {
+    super.initState();
     _themeGroupValueNotifier =
         ValueNotifier<int>(int.parse(HiveConfig.hiveReadData('ThemeMode')));
     _fontSizeGroupValueNotifier =
         ValueNotifier<int>(int.parse(HiveConfig.hiveReadData('FontSize')));
     _switch1Notifier = ValueNotifier<bool>(false);
     _switch2Notifier = ValueNotifier<bool>(false);
-    super.initState();
   }
 
   @override

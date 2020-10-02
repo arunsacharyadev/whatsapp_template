@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,6 +15,7 @@ class _CameraTabState extends State<CameraTab> {
   @override
   void initState() {
     super.initState();
+    _recordScale = 1.0;
     _cameraController = CameraController(cameras[0], ResolutionPreset.medium);
     _cameraController.initialize().then((_) {
       if (!mounted) {
@@ -37,6 +37,7 @@ class _CameraTabState extends State<CameraTab> {
     Icon(Icons.flash_auto),
   ];
 
+  double _recordScale;
   int _flashSelected = 0;
 
   CameraController _cameraController;
@@ -45,15 +46,19 @@ class _CameraTabState extends State<CameraTab> {
   final picker = ImagePicker();
 
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    final pickedImageFile = await picker.getImage(source: ImageSource.camera);
 
     setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
+      if (pickedImageFile != null) {
+        _image = File(pickedImageFile.path);
       } else {
-        print('No image selected.');
+        debugPrint('No image selected.');
       }
     });
+  }
+
+  Future getVideo() async {
+    final pickedVideoFile = await picker.getVideo(source: ImageSource.camera);
   }
 
   @override
@@ -96,16 +101,30 @@ class _CameraTabState extends State<CameraTab> {
           bottom: 35.0,
           child: GestureDetector(
             onTap: getImage,
-            child: Container(
-              width: 70,
-              height: 70,
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.white,
-                  width: 3.0,
-                  style: BorderStyle.solid,
+            onLongPressStart: (longPressDetails) async {
+              await getVideo();
+              setState(() {
+                _recordScale = 1.2;
+              });
+            },
+            onLongPressEnd: (longPressDetails) {
+              setState(() {
+                _recordScale = 1.0;
+              });
+            },
+            child: Transform.scale(
+              scale: _recordScale,
+              child: Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                  color: _recordScale == 1.2 ? Colors.redAccent : null,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 3.0,
+                    style: BorderStyle.solid,
+                  ),
                 ),
               ),
             ),

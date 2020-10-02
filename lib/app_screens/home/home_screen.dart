@@ -2,6 +2,8 @@ import 'package:badges/badges.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:whatsapp_template/app_screens/home/new_chat.dart';
 import 'package:whatsapp_template/app_screens/home/tabs/call_tab.dart';
 import 'package:whatsapp_template/app_screens/home/tabs/camera_tab.dart';
 import 'package:whatsapp_template/app_screens/home/tabs/chat_tab.dart';
@@ -9,7 +11,6 @@ import 'package:whatsapp_template/app_screens/home/tabs/status_tab.dart';
 import 'package:whatsapp_template/app_screens/settings/settings_screen.dart';
 import 'package:whatsapp_template/app_utils/app_theme.dart';
 import 'package:whatsapp_template/app_utils/size_config.dart';
-import 'package:whatsapp_template/app_utils/color_config.dart';
 
 import 'package:whatsapp_template/app_utils/ui_components.dart';
 import 'package:whatsapp_template/app_utils/util_functions.dart';
@@ -22,6 +23,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
+    super.initState();
+
     ///Initializing Controller
     _tabController = TabController(
       length: _tabLength,
@@ -35,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       _tabIndexNotifier.value = _tabController.index;
       _tabActionNotifier.value = getTabActionByIndex(_tabController.index);
     });
-    super.initState();
+    requestPermission();
   }
 
   @override
@@ -51,6 +54,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   ValueNotifier<TabAction> _tabActionNotifier;
 
   TabController _tabController;
+
+  requestPermission() async {
+    Map<Permission, PermissionStatus> status = await [
+      Permission.contacts,
+      Permission.camera,
+      Permission.microphone,
+      Permission.storage,
+    ].request();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -292,9 +304,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             case TabAction.chat:
               return BuildCircularButton(
                 backgroundColor:
-                    Theme.of(context).floatingActionButtonTheme.backgroundColor,
+                Theme
+                    .of(context)
+                    .floatingActionButtonTheme
+                    .backgroundColor,
                 icon: Icon(Icons.chat),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NewChat(),
+                    ),
+                  );
+                },
               );
               break;
             case TabAction.status:
