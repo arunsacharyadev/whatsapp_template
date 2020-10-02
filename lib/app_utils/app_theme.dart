@@ -44,16 +44,16 @@ class AppTheme {
         accentIconTheme: IconThemeData(
           color: tealGreenLight,
         ),
-    accentColorBrightness: Brightness.light,
-    appBarTheme: AppBarTheme(
-      brightness: Brightness.light,
-      color: tealGreenDark,
-    ),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: lightGreen,
-    ),
-    indicatorColor: 'FFFFFF'.toHexColor(),
-    toggleableActiveColor: tealGreenLight,
-    cursorColor: AppTheme.tealGreenLight,
+        accentColorBrightness: Brightness.light,
+        appBarTheme: AppBarTheme(
+          brightness: Brightness.light,
+          color: tealGreenDark,
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: lightGreen,
+        ),
+        indicatorColor: 'FFFFFF'.toHexColor(),
+        toggleableActiveColor: tealGreenLight,
+        cursorColor: AppTheme.tealGreenLight,
       );
 }
