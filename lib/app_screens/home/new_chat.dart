@@ -133,8 +133,7 @@ class _NewChatState extends State<NewChat> {
                           ListTile(
                             leading: CircleAvatar(
                               radius: SizeConfig.textScaleFactor * 20.0,
-                              backgroundColor: Theme
-                                  .of(context)
+                              backgroundColor: Theme.of(context)
                                   .floatingActionButtonTheme
                                   .backgroundColor,
                               child: Icon(
@@ -350,7 +349,7 @@ class SearchContact extends SearchDelegate {
                 ? CircleAvatar(
               radius: SizeConfig.textScaleFactor * 20.0,
               backgroundImage: MemoryImage(data.avatar),
-                  )
+            )
                 : CircleAvatar(
               radius: SizeConfig.textScaleFactor * 20.0,
               backgroundColor: Colors.grey,
@@ -361,7 +360,7 @@ class SearchContact extends SearchDelegate {
                   fontSize: SizeConfig.textScaleFactor * 25,
                 ),
               ),
-                  ),
+            ),
             title: RichText(
               text: TextSpan(
                 children: highlightOccurrences(data.displayName, query),

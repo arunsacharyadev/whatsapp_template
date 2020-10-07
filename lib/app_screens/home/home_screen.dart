@@ -105,13 +105,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ],
                 bottom: TabBar(
                   isScrollable:
-                  SizeConfig.screenOrientation == Orientation.portrait
-                      ? true
-                      : false,
+                      SizeConfig.screenOrientation == Orientation.portrait
+                          ? true
+                          : false,
                   controller: tabController,
-                  labelColor: Theme
-                      .of(context)
-                      .indicatorColor,
+                  labelColor: Theme.of(context).indicatorColor,
                   unselectedLabelColor: Colors.grey,
                   indicatorWeight: 3,
                   indicatorSize: TabBarIndicatorSize.tab,
@@ -368,7 +366,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             case TabAction.status:
               return BuildCircularButton(
                 backgroundColor:
-                Theme.of(context).floatingActionButtonTheme.backgroundColor,
+                Theme
+                    .of(context)
+                    .floatingActionButtonTheme
+                    .backgroundColor,
                 icon: Icon(Icons.camera_alt),
                 onPressed: () {},
               );
@@ -376,7 +377,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             case TabAction.call:
               return BuildCircularButton(
                 backgroundColor:
-                Theme.of(context).floatingActionButtonTheme.backgroundColor,
+                Theme
+                    .of(context)
+                    .floatingActionButtonTheme
+                    .backgroundColor,
                 icon: Icon(Icons.add_call),
                 onPressed: () {},
               );
