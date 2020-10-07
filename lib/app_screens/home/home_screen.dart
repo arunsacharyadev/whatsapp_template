@@ -189,8 +189,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           offset: Offset.fromDirection(
                               getRadiansFromDegree(180.0 + 90.0), value),
                           child: (getTabActionByIndex(
-                              tabController.previousIndex) ==
-                              TabAction.status)
+                                      tabController.previousIndex) ==
+                                  TabAction.status)
                               ? _getEditStatusButton
                               : _getGroupVideoCallingButton,
                         );
