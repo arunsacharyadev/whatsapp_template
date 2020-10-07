@@ -174,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   if (TabAction.chat == tabAction &&
                       tabController.indexIsChanging &&
                       (getTabActionByIndex(tabController.previousIndex) ==
-                          TabAction.status ||
+                              TabAction.status ||
                           getTabActionByIndex(tabController.previousIndex) ==
                               TabAction.call)) {
                     return TweenAnimationBuilder(
