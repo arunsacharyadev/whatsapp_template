@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:whatsapp_template/app_utils/app_theme.dart';
 import 'package:whatsapp_template/app_utils/size_config.dart';
 import 'package:whatsapp_template/app_utils/util_functions.dart';
@@ -776,7 +777,7 @@ Future<dynamic> showFontSizeDialog({
       });
 }
 
-/// highlight Occurences
+/// highlight Occurrences
 List<TextSpan> highlightOccurrences(String source, String query) {
   if (query == null ||
       query.isEmpty ||
@@ -811,4 +812,391 @@ List<TextSpan> highlightOccurrences(String source, String query) {
     lastMatchEnd = match.end;
   }
   return children;
+}
+
+///contact permission
+Future showContactPermission({
+  BuildContext context,
+}) async {
+  String content = "";
+  bool permanentlyDenied = false;
+  if (await Permission.contacts.isPermanentlyDenied) {
+    permanentlyDenied = true;
+    content = "To help you message friends and family on whatsApp,"
+        "allow WhatsApp access to your contacts."
+        "Tap Settings > Permissions, and turn Contacts on.";
+  } else {
+    permanentlyDenied = false;
+    content = "To help you connect with friends and family,"
+        "allow WhatsApp access to your contacts.";
+  }
+  if (await Permission.contacts.isGranted) {
+    return Future.value("GRANTED");
+  } else {
+    return await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        SizeConfig()..init(context);
+        return AlertDialog(
+          titlePadding: EdgeInsets.zero,
+          title: AspectRatio(
+            aspectRatio: (SizeConfig.screenOrientation == Orientation.portrait)
+                ? 2.5
+                : 5,
+            child: Container(
+              color: AppTheme.tealGreenLight,
+              child: Center(
+                child: Icon(
+                  Icons.contacts,
+                  size: SizeConfig.textScaleFactor * 40.0,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          content: Text(
+            content,
+          ),
+          actions: [
+            InkWell(
+              onTap: () {
+                Navigator.pop(context, "Not Now");
+              },
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 15.0),
+                child: Text(
+                  "NOT NOW",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).secondaryHeaderColor,
+                  ),
+                ),
+              ),
+            ),
+            if (!permanentlyDenied)
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context, "CONTINUE");
+                },
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 15.0),
+                  child: Text(
+                    "CONTINUE",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).secondaryHeaderColor,
+                    ),
+                  ),
+                ),
+              ),
+            if (permanentlyDenied)
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context, "SETTINGS");
+                },
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 15.0),
+                  child: Text(
+                    "SETTINGS",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).secondaryHeaderColor,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+///camera permission
+Future checkCameraPermission({
+  BuildContext context,
+}) async {
+  String content = "";
+  bool permanentlyDenied = false;
+  if (await Permission.camera.isPermanentlyDenied) {
+    permanentlyDenied = true;
+    content = "To capture photos and videos,"
+        "allow WhatsApp access to your camera."
+        "Tap Settings > Permissions, and turn Camera on.";
+  } else {
+    permanentlyDenied = false;
+    content = "To capture photos and videos,"
+        "allow WhatsApp access to your camera.";
+  }
+  if (await Permission.camera.isGranted) {
+    return Future.value("GRANTED");
+  } else {
+    return await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        SizeConfig()..init(context);
+        return AlertDialog(
+          titlePadding: EdgeInsets.zero,
+          title: AspectRatio(
+            aspectRatio: (SizeConfig.screenOrientation == Orientation.portrait)
+                ? 2.5
+                : 5,
+            child: Container(
+              color: AppTheme.tealGreenLight,
+              child: Center(
+                child: Icon(
+                  Icons.camera_alt,
+                  size: SizeConfig.textScaleFactor * 40.0,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          content: Text(
+            content,
+          ),
+          actions: [
+            InkWell(
+              onTap: () {
+                Navigator.pop(context, "NOT NOW");
+              },
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 15.0),
+                child: Text(
+                  "NOT NOW",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).secondaryHeaderColor,
+                  ),
+                ),
+              ),
+            ),
+            if (!permanentlyDenied)
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context, "CONTINUE");
+                },
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 15.0),
+                  child: Text(
+                    "CONTINUE",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).secondaryHeaderColor,
+                    ),
+                  ),
+                ),
+              ),
+            if (permanentlyDenied)
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context, "SETTINGS");
+                },
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 15.0),
+                  child: Text(
+                    "SETTINGS",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).secondaryHeaderColor,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+///show Permission Dialog
+Future showPermissionDialog({
+  @required BuildContext context,
+  @required Map<Permission, PermissionStatus> permissionStatus,
+  @required String permissionTitle,
+}) async {
+  return await showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) {
+      SizeConfig()..init(context);
+      return AlertDialog(
+        titlePadding: EdgeInsets.zero,
+        title: permissionDialogTitle(permissionStatus),
+        content: Text(
+          getPermissionDialogContent(permissionTitle, permissionStatus),
+        ),
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.pop(context, "NOT NOW");
+            },
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 15.0),
+              child: Text(
+                "NOT NOW",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).secondaryHeaderColor,
+                ),
+              ),
+            ),
+          ),
+          if (!permissionStatus.values
+              .contains(PermissionStatus.permanentlyDenied))
+            InkWell(
+              onTap: () {
+                Navigator.pop(context, "CONTINUE");
+              },
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 15.0),
+                child: Text(
+                  "CONTINUE",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).secondaryHeaderColor,
+                  ),
+                ),
+              ),
+            ),
+          if (permissionStatus.values
+              .contains(PermissionStatus.permanentlyDenied))
+            InkWell(
+              onTap: () {
+                Navigator.pop(context, "SETTINGS");
+              },
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 15.0),
+                child: Text(
+                  "SETTINGS",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).secondaryHeaderColor,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      );
+    },
+  );
+}
+
+///permission Dialog Title
+Widget permissionDialogTitle(
+    Map<Permission, PermissionStatus> permissionStatus) {
+  return AspectRatio(
+    aspectRatio:
+        (SizeConfig.screenOrientation == Orientation.portrait) ? 2.5 : 5,
+    child: Container(
+      color: AppTheme.tealGreenLight,
+      child: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: List.generate(
+            permissionStatus.length,
+            (index) {
+              if (permissionStatus[permissionStatus.keys.elementAt(index)] !=
+                  PermissionStatus.granted) {
+                Widget buildAddIcon() {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Icon(
+                      Icons.add_rounded,
+                      size: SizeConfig.textScaleFactor * 30.0,
+                      color: Colors.white,
+                    ),
+                  );
+                }
+
+                switch (permissionStatus.keys.elementAt(index)) {
+                  case Permission.storage:
+                    if (index < permissionStatus.length - 1) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.folder,
+                            size: SizeConfig.textScaleFactor * 40.0,
+                            color: Colors.white,
+                          ),
+                          buildAddIcon(),
+                        ],
+                      );
+                    } else {
+                      return Icon(
+                        Icons.folder,
+                        size: SizeConfig.textScaleFactor * 40.0,
+                        color: Colors.white,
+                      );
+                    }
+                    break;
+
+                  case Permission.camera:
+                    if (index < permissionStatus.length - 1) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.camera_alt,
+                            size: SizeConfig.textScaleFactor * 40.0,
+                            color: Colors.white,
+                          ),
+                          buildAddIcon(),
+                        ],
+                      );
+                    } else {
+                      return Icon(
+                        Icons.camera_alt,
+                        size: SizeConfig.textScaleFactor * 40.0,
+                        color: Colors.white,
+                      );
+                    }
+                    break;
+
+                  case Permission.contacts:
+                    if (index < permissionStatus.length - 1) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.contacts,
+                            size: SizeConfig.textScaleFactor * 40.0,
+                            color: Colors.white,
+                          ),
+                          buildAddIcon(),
+                        ],
+                      );
+                    } else {
+                      return Icon(
+                        Icons.contacts,
+                        size: SizeConfig.textScaleFactor * 40.0,
+                        color: Colors.white,
+                      );
+                    }
+                    break;
+                  default:
+                    return Container();
+                    break;
+                }
+              } else {
+                return Container();
+              }
+            },
+          ),
+        ),
+      ),
+    ),
+  );
 }

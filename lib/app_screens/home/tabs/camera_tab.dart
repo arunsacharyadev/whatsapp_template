@@ -1,10 +1,15 @@
 import 'dart:io';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:whatsapp_template/app_utils/util_functions.dart';
+import 'package:whatsapp_template/app_screens/home/home_screen.dart';
+
+List<CameraDescription> cameras;
 
 class CameraTab extends StatefulWidget {
   @override
@@ -16,13 +21,108 @@ class _CameraTabState extends State<CameraTab> {
   void initState() {
     super.initState();
     _recordScale = 1.0;
-    _cameraController = CameraController(cameras[0], ResolutionPreset.medium);
-    _cameraController.initialize().then((_) {
-      if (!mounted) {
-        return;
+    _cameraController = CameraController(cameras[0], ResolutionPreset.medium,
+        enableAudio: false);
+    checkPermission(
+      context: context,
+      permissionTitle: "To capture photos and videos",
+      permissionElement: [
+        Permission.camera,
+        Permission.storage,
+      ],
+    ).then((res) async {
+      switch (res) {
+        case "GRANTED":
+          _cameraController.initialize().then((_) {
+            if (!mounted) {
+              return;
+            }
+            setState(() {});
+          });
+          break;
+        case "NOT NOW":
+          tabController.animateTo(tabController.previousIndex);
+          break;
+        case "CONTINUE":
+          await [Permission.camera, Permission.storage].request().then((value) {
+            if (value.values.toList().every((element) => element.isGranted)) {
+              _cameraController.initialize().then((_) {
+                if (!mounted) {
+                  return;
+                }
+                setState(() {});
+              });
+            } else {
+              tabController.animateTo(tabController.previousIndex);
+            }
+          });
+          break;
+        case "SETTINGS":
+          await AppSettings.openAppSettings().then((_) async {
+            if (await Permission.camera.isGranted &&
+                await Permission.storage.isGranted) {
+              _cameraController.initialize().then((_) {
+                if (!mounted) {
+                  return;
+                }
+                setState(() {});
+              });
+            } else {
+              tabController.animateTo(tabController.previousIndex);
+            }
+          });
+          break;
+        default:
+          break;
       }
-      setState(() {});
     });
+    /*checkCameraPermission(
+      context: context,
+    ).then((res) async {
+      switch (res) {
+        case "GRANTED":
+          _cameraController.initialize().then((_) {
+            if (!mounted) {
+              return;
+            }
+            setState(() {});
+          });
+          break;
+        case "NOT NOW":
+          tabController.animateTo(tabController.previousIndex);
+          break;
+        case "CONTINUE":
+          await Permission.camera.request().then((value) {
+            if (value.isGranted) {
+              _cameraController.initialize().then((_) {
+                if (!mounted) {
+                  return;
+                }
+                setState(() {});
+              });
+            } else {
+              tabController.animateTo(tabController.previousIndex);
+            }
+          });
+          break;
+        case "SETTINGS":
+          await AppSettings.openAppSettings().then((_) async {
+            if (await Permission.camera.isGranted) {
+              _cameraController.initialize().then((_) {
+                if (!mounted) {
+                  return;
+                }
+                setState(() {});
+              });
+            } else {
+              tabController.animateTo(tabController.previousIndex);
+            }
+          });
+          break;
+        default:
+          break;
+      }
+    });*/
   }
 
   @override
@@ -63,10 +163,15 @@ class _CameraTabState extends State<CameraTab> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_cameraController.value.isInitialized) return Container();
     return Stack(
       alignment: Alignment.center,
       children: [
+        if (!_cameraController.value.isInitialized)
+          Container(
+            color: Colors.black,
+            width: double.infinity,
+            height: double.infinity,
+          ),
         CameraPreview(
           _cameraController,
         ),

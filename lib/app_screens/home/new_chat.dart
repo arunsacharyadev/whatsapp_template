@@ -74,7 +74,7 @@ class _NewChatState extends State<NewChat> {
                               fontSize: 15,
                             ),
                           )
-                        : Container(),
+                        : null,
                     trailing: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -121,44 +121,112 @@ class _NewChatState extends State<NewChat> {
                         ),
                       );
                       break;
+
                     case ConnectionState.done:
+                      List<Contact> contactList = [];
                       if (snapshot.hasData) {
-                        List<Contact> contactList = snapshot.data;
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: contactList.length,
-                          itemBuilder: (context, index) {
-                            Contact data = contactList[index];
-                            return ListTile(
-                              leading: (data.avatar != null &&
+                        contactList = snapshot.data;
+                      }
+                      return ListView(
+                        shrinkWrap: true,
+                        children: [
+                          ListTile(
+                            leading: CircleAvatar(
+                              radius: SizeConfig.textScaleFactor * 20.0,
+                              backgroundColor: Theme
+                                  .of(context)
+                                  .floatingActionButtonTheme
+                                  .backgroundColor,
+                              child: Icon(
+                                Icons.group_rounded,
+                                size: SizeConfig.textScaleFactor * 25,
+                                color: Colors.white,
+                              ),
+                            ),
+                            title: Text("New group"),
+                          ),
+                          ListTile(
+                            leading: CircleAvatar(
+                              radius: SizeConfig.textScaleFactor * 20.0,
+                              backgroundColor: Theme
+                                  .of(context)
+                                  .floatingActionButtonTheme
+                                  .backgroundColor,
+                              child: Icon(
+                                Icons.person_add_rounded,
+                                size: SizeConfig.textScaleFactor * 25,
+                                color: Colors.white,
+                              ),
+                            ),
+                            title: Text("New Contact"),
+                            trailing: Icon(
+                              Icons.qr_code,
+                              size: SizeConfig.textScaleFactor * 25,
+                              color: Theme
+                                  .of(context)
+                                  .floatingActionButtonTheme
+                                  .backgroundColor,
+                            ),
+                          ),
+                          if (contactList.isNotEmpty)
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: contactList.length,
+                              itemBuilder: (context, index) {
+                                Contact data = contactList[index];
+                                return ListTile(
+                                  leading: (data.avatar != null &&
                                       data.avatar.isNotEmpty)
-                                  ? CircleAvatar(
-                                      radius: SizeConfig.textScaleFactor * 24.0,
-                                      backgroundImage: MemoryImage(data.avatar),
-                                    )
-                                  : CircleAvatar(
-                                      radius: SizeConfig.textScaleFactor * 24.0,
-                                      backgroundColor: Colors.grey,
-                                      child: Text(
-                                        data.initials().toString(),
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize:
-                                              SizeConfig.textScaleFactor * 25,
-                                        ),
+                                      ? CircleAvatar(
+                                    radius:
+                                    SizeConfig.textScaleFactor * 20.0,
+                                    backgroundImage:
+                                    MemoryImage(data.avatar),
+                                  )
+                                      : CircleAvatar(
+                                    radius:
+                                    SizeConfig.textScaleFactor * 20.0,
+                                    backgroundColor: Colors.grey,
+                                    child: Text(
+                                      data.initials().toString(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize:
+                                        SizeConfig.textScaleFactor *
+                                            25,
                                       ),
                                     ),
-                              title: Text(data.displayName),
-                              subtitle: Text(
-                                "Hey there! I am using WhatsApp",
-                              ),
-                            );
-                          },
-                        );
-                      } else {
-                        return Text("Something Went Wrong");
-                      }
+                                  ),
+                                  title: Text(data.displayName),
+                                  subtitle: Text(
+                                    "Hey there! I am using WhatsApp",
+                                  ),
+                                );
+                              },
+                            ),
+                          if (contactList.isEmpty)
+                            ListTile(
+                              contentPadding: EdgeInsets.only(left: 70.0),
+                              title: Text("No WhatsApp contacts"),
+                            ),
+                          ListTile(
+                            leading: Icon(
+                              Icons.share,
+                              size: SizeConfig.textScaleFactor * 25,
+                            ),
+                            title: Text("Invite friends"),
+                          ),
+                          ListTile(
+                            leading: Icon(
+                              Icons.help,
+                              size: SizeConfig.textScaleFactor * 25,
+                            ),
+                            title: Text("Contacts help"),
+                          ),
+                        ],
+                      );
                       break;
+
                     default:
                       return Container();
                       break;
@@ -280,19 +348,19 @@ class SearchContact extends SearchDelegate {
           return ListTile(
             leading: (data.avatar != null && data.avatar.isNotEmpty)
                 ? CircleAvatar(
-                    radius: SizeConfig.textScaleFactor * 24.0,
-                    backgroundImage: MemoryImage(data.avatar),
+              radius: SizeConfig.textScaleFactor * 20.0,
+              backgroundImage: MemoryImage(data.avatar),
                   )
                 : CircleAvatar(
-                    radius: SizeConfig.textScaleFactor * 24.0,
-                    backgroundColor: Colors.grey,
-                    child: Text(
-                      data.initials().toString(),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: SizeConfig.textScaleFactor * 25,
-                      ),
-                    ),
+              radius: SizeConfig.textScaleFactor * 20.0,
+              backgroundColor: Colors.grey,
+              child: Text(
+                data.initials().toString(),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: SizeConfig.textScaleFactor * 25,
+                ),
+              ),
                   ),
             title: RichText(
               text: TextSpan(
@@ -317,14 +385,12 @@ class SearchContact extends SearchDelegate {
           ListTile(
             leading: Icon(
               Icons.share,
-              color: Theme.of(context).accentIconTheme.color,
             ),
             title: Text("Invite friends"),
           ),
           ListTile(
             leading: Icon(
               Icons.help,
-              color: Theme.of(context).accentIconTheme.color,
             ),
             title: Text("Contacts help"),
           ),

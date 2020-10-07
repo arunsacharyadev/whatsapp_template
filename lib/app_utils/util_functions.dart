@@ -1,6 +1,8 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+
+import 'package:permission_handler/permission_handler.dart';
+import 'package:whatsapp_template/app_utils/ui_components.dart';
 
 enum TabAction { camera, chat, status, call }
 
@@ -29,8 +31,6 @@ enum CallType {
   voice,
   video,
 }
-
-List<CameraDescription> cameras;
 
 /// ## Print logError
 void logError({String code, String description, StackTrace stackTrace}) {
@@ -135,4 +135,92 @@ String flattenPhoneNumber(String number) {
   return number.replaceAllMapped(RegExp(r'^(\+)|\D'), (Match m) {
     return m[0] == "+" ? "+" : "";
   });
+}
+
+///check Permission
+Future checkPermission({
+  @required BuildContext context,
+  @required List<Permission> permissionElement,
+  @required String permissionTitle,
+}) async {
+  Map<Permission, PermissionStatus> permissionStatus =
+      Map<Permission, PermissionStatus>();
+  for (var element in permissionElement) {
+    permissionStatus.addAll({
+      element: await element.status,
+    });
+  }
+  if (permissionStatus.values.every((element) => element.isGranted)) {
+    return "GRANTED";
+  } else {
+    return await showPermissionDialog(
+      context: context,
+      permissionStatus: permissionStatus,
+      permissionTitle: permissionTitle,
+    );
+  }
+}
+
+/// ## get Permission Dialog Content
+String getPermissionDialogContent(
+  String permissionTitle,
+  Map<Permission, PermissionStatus> permissionStatus,
+) {
+  String content = permissionTitle + ", allow WhatsApp access to ";
+  String storageTitle = "Storage";
+  String storageDescription = "device's photos, media, and files";
+  String cameraTitle = "Camera";
+  String cameraDescription = "camera";
+  String contactTitle = "Contact";
+  String contactDescription = "contacts";
+  List<String> tempDescription = [];
+  permissionStatus.forEach((key, value) {
+    if (value != PermissionStatus.granted) {
+      switch (key) {
+        case Permission.storage:
+          tempDescription.add("your " + storageDescription);
+          break;
+        case Permission.camera:
+          tempDescription.add("your " + cameraDescription);
+          break;
+        case Permission.contacts:
+          tempDescription.add("your " + contactDescription);
+          break;
+        default:
+          break;
+      }
+    }
+  });
+  content = content +
+      "${(tempDescription.isNotEmpty && tempDescription.length > 1) ? tempDescription.sublist(0, tempDescription.length - 1).join(", ") : ""}" +
+      "${(tempDescription.isNotEmpty && tempDescription.length > 1) ? " add " : ""}" +
+      tempDescription.last +
+      ".";
+  if (permissionStatus.values.contains(PermissionStatus.permanentlyDenied)) {
+    content = content + " Tap Settings > Permissions, and turn ";
+    List<String> tempTitle = [];
+    permissionStatus.forEach((key, value) {
+      if (value != PermissionStatus.granted) {
+        switch (key) {
+          case Permission.storage:
+            tempTitle.add(storageTitle + " on");
+            break;
+          case Permission.camera:
+            tempTitle.add(cameraTitle + " on");
+            break;
+          case Permission.contacts:
+            tempTitle.add(contactTitle + " on");
+            break;
+          default:
+            break;
+        }
+      }
+    });
+    content = content +
+        "${(tempTitle.isNotEmpty && tempTitle.length > 1) ? tempTitle.sublist(0, tempTitle.length - 1).join(", ") : ""}" +
+        "${(tempTitle.isNotEmpty && tempTitle.length > 1) ? " and " : ""}" +
+        tempTitle.last +
+        ".";
+  }
+  return content;
 }

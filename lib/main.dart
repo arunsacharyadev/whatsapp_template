@@ -9,6 +9,7 @@ import 'package:whatsapp_template/app_utils/app_theme.dart';
 import 'package:whatsapp_template/app_services/theme_notifier.dart';
 import 'package:whatsapp_template/app_utils/hive_config.dart';
 import 'package:whatsapp_template/app_utils/util_functions.dart';
+import 'package:whatsapp_template/app_screens/home/tabs/camera_tab.dart';
 
 void main() async {
   try {

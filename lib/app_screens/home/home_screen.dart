@@ -1,3 +1,4 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,8 @@ import 'package:whatsapp_template/app_utils/size_config.dart';
 import 'package:whatsapp_template/app_utils/ui_components.dart';
 import 'package:whatsapp_template/app_utils/util_functions.dart';
 
+TabController tabController;
+
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -26,25 +29,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.initState();
 
     ///Initializing Controller
-    _tabController = TabController(
+    tabController = TabController(
       length: _tabLength,
       vsync: this,
       initialIndex: 1,
     );
-    _tabIndexNotifier = ValueNotifier<int>(_tabController.index);
+    _tabIndexNotifier = ValueNotifier<int>(tabController.index);
     _tabActionNotifier =
-        ValueNotifier<TabAction>(getTabActionByIndex(_tabController.index));
-    _tabController.addListener(() {
-      _tabIndexNotifier.value = _tabController.index;
-      _tabActionNotifier.value = getTabActionByIndex(_tabController.index);
+        ValueNotifier<TabAction>(getTabActionByIndex(tabController.index));
+    tabController.addListener(() {
+      _tabIndexNotifier.value = tabController.index;
+      _tabActionNotifier.value = getTabActionByIndex(tabController.index);
     });
     requestPermission();
   }
 
   @override
   void dispose() {
-    _tabController.removeListener(() {});
-    _tabController.dispose();
+    tabController.removeListener(() {});
+    tabController.dispose();
     _tabIndexNotifier.dispose();
     super.dispose();
   }
@@ -53,14 +56,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   ValueNotifier<int> _tabIndexNotifier;
   ValueNotifier<TabAction> _tabActionNotifier;
 
-  TabController _tabController;
-
   requestPermission() async {
-    Map<Permission, PermissionStatus> status = await [
+    await [
       Permission.contacts,
       Permission.camera,
-      Permission.microphone,
       Permission.storage,
+      Permission.microphone,
     ].request();
   }
 
@@ -68,6 +69,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.light,
         statusBarColor: Theme.of(context).appBarTheme.color,
       ),
     );
@@ -102,11 +105,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ],
                 bottom: TabBar(
                   isScrollable:
-                      SizeConfig.screenOrientation == Orientation.portrait
-                          ? true
-                          : false,
-                  controller: _tabController,
-                  labelColor: Theme.of(context).indicatorColor,
+                  SizeConfig.screenOrientation == Orientation.portrait
+                      ? true
+                      : false,
+                  controller: tabController,
+                  labelColor: Theme
+                      .of(context)
+                      .indicatorColor,
                   unselectedLabelColor: Colors.grey,
                   indicatorWeight: 3,
                   indicatorSize: TabBarIndicatorSize.tab,
@@ -149,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ];
           },
           body: TabBarView(
-            controller: _tabController,
+            controller: tabController,
             children: [
               CameraTab(),
               ChatTab(),
@@ -169,10 +174,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 valueListenable: _tabActionNotifier,
                 builder: (context, tabAction, _) {
                   if (TabAction.chat == tabAction &&
-                      _tabController.indexIsChanging &&
-                      (getTabActionByIndex(_tabController.previousIndex) ==
-                              TabAction.status ||
-                          getTabActionByIndex(_tabController.previousIndex) ==
+                      tabController.indexIsChanging &&
+                      (getTabActionByIndex(tabController.previousIndex) ==
+                          TabAction.status ||
+                          getTabActionByIndex(tabController.previousIndex) ==
                               TabAction.call)) {
                     return TweenAnimationBuilder(
                       duration: Duration(milliseconds: 100),
@@ -186,8 +191,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           offset: Offset.fromDirection(
                               getRadiansFromDegree(180.0 + 90.0), value),
                           child: (getTabActionByIndex(
-                                      _tabController.previousIndex) ==
-                                  TabAction.status)
+                              tabController.previousIndex) ==
+                              TabAction.status)
                               ? _getEditStatusButton
                               : _getGroupVideoCallingButton,
                         );
@@ -196,17 +201,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   } else if (TabAction.status == tabAction) {
                     return TweenAnimationBuilder(
                       duration:
-                          (getTabActionByIndex(_tabController.previousIndex) ==
-                                  TabAction.call)
-                              ? Duration(milliseconds: 0)
-                              : Duration(milliseconds: 100),
+                      (getTabActionByIndex(tabController.previousIndex) ==
+                          TabAction.call)
+                          ? Duration(milliseconds: 0)
+                          : Duration(milliseconds: 100),
                       tween: Tween<double>(
                         begin: 0,
                         end: 70,
                       ),
                       curve: Curves.easeInExpo,
                       builder: (context, value, _) {
-                        if (getTabActionByIndex(_tabController.previousIndex) ==
+                        if (getTabActionByIndex(tabController.previousIndex) ==
                             TabAction.call) {
                           return Transform.translate(
                             offset: Offset.fromDirection(
@@ -225,17 +230,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   } else if (TabAction.call == tabAction) {
                     return TweenAnimationBuilder(
                       duration:
-                          (getTabActionByIndex(_tabController.previousIndex) ==
-                                  TabAction.status)
-                              ? Duration(milliseconds: 0)
-                              : Duration(milliseconds: 100),
+                      (getTabActionByIndex(tabController.previousIndex) ==
+                          TabAction.status)
+                          ? Duration(milliseconds: 0)
+                          : Duration(milliseconds: 100),
                       tween: Tween<double>(
                         begin: 0,
                         end: 70,
                       ),
                       curve: Curves.easeInExpo,
                       builder: (context, value, _) {
-                        if (getTabActionByIndex(_tabController.previousIndex) ==
+                        if (getTabActionByIndex(tabController.previousIndex) ==
                             TabAction.status) {
                           return Transform.translate(
                             offset: Offset.fromDirection(
@@ -304,22 +309,66 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             case TabAction.chat:
               return BuildCircularButton(
                 backgroundColor:
-                    Theme.of(context).floatingActionButtonTheme.backgroundColor,
+                Theme
+                    .of(context)
+                    .floatingActionButtonTheme
+                    .backgroundColor,
                 icon: Icon(Icons.chat),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => NewChat(),
-                    ),
-                  );
+                onPressed: () async {
+                  await checkPermission(
+                      context: context,
+                      permissionElement: [
+                        Permission.contacts,
+                      ],
+                      permissionTitle:
+                      "To help you message friends and family on WhatsApp")
+                      .then((res) async {
+                    switch (res) {
+                      case "GRANTED":
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NewChat(),
+                          ),
+                        );
+                        break;
+                      case "CONTINUE":
+                        await [Permission.contacts].request().then((value) {
+                          if (value.values
+                              .toList()
+                              .every((element) => element.isGranted)) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NewChat(),
+                              ),
+                            );
+                          }
+                        });
+                        break;
+                      case "SETTINGS":
+                        await AppSettings.openAppSettings().then((_) async {
+                          if (await Permission.contacts.isGranted) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NewChat(),
+                              ),
+                            );
+                          }
+                        });
+                        break;
+                      default:
+                        break;
+                    }
+                  });
                 },
               );
               break;
             case TabAction.status:
               return BuildCircularButton(
                 backgroundColor:
-                    Theme.of(context).floatingActionButtonTheme.backgroundColor,
+                Theme.of(context).floatingActionButtonTheme.backgroundColor,
                 icon: Icon(Icons.camera_alt),
                 onPressed: () {},
               );
@@ -327,7 +376,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             case TabAction.call:
               return BuildCircularButton(
                 backgroundColor:
-                    Theme.of(context).floatingActionButtonTheme.backgroundColor,
+                Theme.of(context).floatingActionButtonTheme.backgroundColor,
                 icon: Icon(Icons.add_call),
                 onPressed: () {},
               );
