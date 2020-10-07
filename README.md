@@ -11,6 +11,8 @@ Building a WhatsApp Clone in flutter
 
 ![out-2](https://user-images.githubusercontent.com/69200066/94306905-6b137700-ff91-11ea-8d21-f13eec8e3c82.gif)
 
+## License
+
 [![license](https://img.shields.io/github/license/DAVFoundation/captain-n3m0.svg?style=flat-square)](https://github.com/arunsacharyadev/whatsapp_template/blob/master/LICENSE.md)
 
 ```
