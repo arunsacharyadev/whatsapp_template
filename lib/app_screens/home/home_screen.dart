@@ -228,10 +228,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   } else if (TabAction.call == tabAction) {
                     return TweenAnimationBuilder(
                       duration:
-                      (getTabActionByIndex(tabController.previousIndex) ==
-                          TabAction.status)
-                          ? Duration(milliseconds: 0)
-                          : Duration(milliseconds: 100),
+                          (getTabActionByIndex(tabController.previousIndex) ==
+                                  TabAction.status)
+                              ? Duration(milliseconds: 0)
+                              : Duration(milliseconds: 100),
                       tween: Tween<double>(
                         begin: 0,
                         end: 70,

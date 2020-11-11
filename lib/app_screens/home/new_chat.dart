@@ -160,8 +160,7 @@ class _NewChatState extends State<NewChat> {
                             trailing: Icon(
                               Icons.qr_code,
                               size: SizeConfig.textScaleFactor * 25,
-                              color: Theme
-                                  .of(context)
+                              color: Theme.of(context)
                                   .floatingActionButtonTheme
                                   .backgroundColor,
                             ),
