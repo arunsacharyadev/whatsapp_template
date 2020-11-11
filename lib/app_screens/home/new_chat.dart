@@ -173,27 +173,27 @@ class _NewChatState extends State<NewChat> {
                                 Contact data = contactList[index];
                                 return ListTile(
                                   leading: (data.avatar != null &&
-                                      data.avatar.isNotEmpty)
+                                          data.avatar.isNotEmpty)
                                       ? CircleAvatar(
-                                    radius:
-                                    SizeConfig.textScaleFactor * 20.0,
-                                    backgroundImage:
-                                    MemoryImage(data.avatar),
-                                  )
+                                          radius:
+                                              SizeConfig.textScaleFactor * 20.0,
+                                          backgroundImage:
+                                              MemoryImage(data.avatar),
+                                        )
                                       : CircleAvatar(
-                                    radius:
-                                    SizeConfig.textScaleFactor * 20.0,
-                                    backgroundColor: Colors.grey,
-                                    child: Text(
-                                      data.initials().toString(),
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize:
-                                        SizeConfig.textScaleFactor *
-                                            25,
-                                      ),
-                                    ),
-                                  ),
+                                          radius:
+                                              SizeConfig.textScaleFactor * 20.0,
+                                          backgroundColor: Colors.grey,
+                                          child: Text(
+                                            data.initials().toString(),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize:
+                                                  SizeConfig.textScaleFactor *
+                                                      25,
+                                            ),
+                                          ),
+                                        ),
                                   title: Text(data.displayName),
                                   subtitle: Text(
                                     "Hey there! I am using WhatsApp",
