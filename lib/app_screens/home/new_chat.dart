@@ -15,6 +15,8 @@ class NewChat extends StatefulWidget {
 }
 
 class _NewChatState extends State<NewChat> {
+  Future? _future;
+
   Future _getContacts() async {
     List<Contact> contacts = (await ContactsService.getContacts()).toList();
     _contactCount.value = contacts.length;
@@ -29,6 +31,7 @@ class _NewChatState extends State<NewChat> {
   void initState() {
     super.initState();
     _contactCount = ValueNotifier<int>(0);
+    _future = _getContacts();
   }
 
   @override
@@ -105,7 +108,7 @@ class _NewChatState extends State<NewChat> {
             ),
             Expanded(
               child: FutureBuilder(
-                future: _getContacts(),
+                future: _future,
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
@@ -126,6 +129,7 @@ class _NewChatState extends State<NewChat> {
                       }
                       return ListView(
                         shrinkWrap: true,
+                        physics: BouncingScrollPhysics(),
                         children: [
                           ListTile(
                             leading: CircleAvatar(
@@ -165,6 +169,7 @@ class _NewChatState extends State<NewChat> {
                           if (contactList!.isNotEmpty)
                             ListView.builder(
                               shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
                               itemCount: contactList.length,
                               itemBuilder: (context, index) {
                                 Contact data = contactList![index];
@@ -187,7 +192,7 @@ class _NewChatState extends State<NewChat> {
                                               color: Colors.white,
                                               fontSize:
                                                   SizeConfig.textScaleFactor *
-                                                      25,
+                                                      20,
                                             ),
                                           ),
                                         ),
