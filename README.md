@@ -1,6 +1,6 @@
 # WhatsApp_template
 
-Building a WhatsApp Clone in flutter
+Building a WhatsApp ui Clone in flutter.
 
 # Screenshots
 
