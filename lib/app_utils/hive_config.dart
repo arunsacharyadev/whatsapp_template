@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:path_provider/path_provider.dart';
 
 class HiveConfig {
   static Future hiveInit() async {
-    var dir = await getApplicationDocumentsDirectory();
-    await Hive.initFlutter(dir.path);
+    await Hive.initFlutter();
   }
 
   static Future hiveOpenBoxAsync(String name) async {

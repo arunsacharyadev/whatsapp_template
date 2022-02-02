@@ -1,4 +1,3 @@
-import 'package:app_settings/app_settings.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -80,7 +79,7 @@ class _CameraTabState extends State<CameraTab> {
           });
           break;
         case 'SETTINGS':
-          await AppSettings.openAppSettings().then((_) async {
+          await openAppSettings().then((_) async {
             if (await Permission.camera.isGranted &&
                 await Permission.storage.isGranted) {
               _cameraController!.initialize().then((_) {

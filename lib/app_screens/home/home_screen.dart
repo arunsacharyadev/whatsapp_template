@@ -1,4 +1,3 @@
-import 'package:app_settings/app_settings.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -335,7 +334,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         });
                         break;
                       case 'SETTINGS':
-                        await AppSettings.openAppSettings().then((_) async {
+                        await openAppSettings().then((_) async {
                           if (await Permission.contacts.isGranted) {
                             Navigator.push(
                               context,
