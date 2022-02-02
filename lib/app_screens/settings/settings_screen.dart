@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:whatsapp_template/app_screens/settings/settings_chats_screen.dart';
-import 'package:whatsapp_template/app_utils/size_config.dart';
-import 'package:whatsapp_template/app_utils/ui_components.dart';
+
+import '../../app_utils/size_config.dart';
+import '../../app_utils/ui_components.dart';
+import 'settings_chats_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({Key? key}) : super(key: key);
+
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
 }
@@ -12,11 +15,11 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    SizeConfig()..init(context);
+    SizeConfig().init(context);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Settings"),
+          title: Text('Settings'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             iconSize: SizeConfig.textScaleFactor * 25,
@@ -42,14 +45,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
                 title: Text(
-                  "arun",
+                  'arun',
                   style: TextStyle(
                     fontSize: SizeConfig.textScaleFactor * 20,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 subtitle: Text(
-                  "Available",
+                  'Available',
                   style: TextStyle(
                     fontSize: SizeConfig.textScaleFactor * 18,
                   ),
@@ -58,7 +61,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   aspectRatio: SizeConfig.textScaleFactor * 0.5,
                   child: SvgPicture.asset(
                     'assets/icons/qr_code_scanner.svg',
-                    color: Theme.of(context).accentIconTheme.color,
+                    color: Theme.of(context).iconTheme.color,
                   ),
                 ),
               ),
@@ -72,14 +75,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     BuildSettingsListTile(
                       context: context,
                       leadingImage: 'assets/icons/encryption_key.svg',
-                      title: "Account",
-                      subtitle: "Privacy, security, change number",
+                      title: 'Account',
+                      subtitle: 'Privacy, security, change number',
                     ),
                     BuildSettingsListTile(
                         context: context,
                         leadingIcon: Icons.chat,
-                        title: "Chats",
-                        subtitle: "Theme, wallpapers, chat history",
+                        title: 'Chats',
+                        subtitle: 'Theme, wallpapers, chat history',
                         callback: () {
                           Navigator.push(
                             context,
@@ -91,25 +94,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     BuildSettingsListTile(
                       context: context,
                       leadingIcon: Icons.notifications,
-                      title: "Notifications",
-                      subtitle: "Messages, group & call tones",
+                      title: 'Notifications',
+                      subtitle: 'Messages, group & call tones',
                     ),
                     BuildSettingsListTile(
                       context: context,
                       leadingIcon: Icons.data_usage,
-                      title: "Data and storage usage",
-                      subtitle: "Network usage, auto-download",
+                      title: 'Data and storage usage',
+                      subtitle: 'Network usage, auto-download',
                     ),
                     BuildSettingsListTile(
                       context: context,
                       leadingIcon: Icons.help_outline,
-                      title: "Help",
-                      subtitle: "FAQ, contact us, privacy policy",
+                      title: 'Help',
+                      subtitle: 'FAQ, contact us, privacy policy',
                     ),
                     BuildSettingsListTile(
                       context: context,
                       leadingIcon: Icons.group,
-                      title: "Invite a friend",
+                      title: 'Invite a friend',
                     ),
                   ],
                 ),

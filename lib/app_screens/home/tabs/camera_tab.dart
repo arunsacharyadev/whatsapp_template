@@ -1,22 +1,44 @@
-import 'dart:io';
-
 import 'package:app_settings/app_settings.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:whatsapp_template/app_utils/util_functions.dart';
-import 'package:whatsapp_template/app_screens/home/home_screen.dart';
 
-List<CameraDescription> cameras;
+import '../../../app_utils/util_functions.dart';
+import '../home_screen.dart';
+
+late List<CameraDescription> cameras;
 
 class CameraTab extends StatefulWidget {
+  const CameraTab({Key? key}) : super(key: key);
+
   @override
   _CameraTabState createState() => _CameraTabState();
 }
 
 class _CameraTabState extends State<CameraTab> {
+  final List<Icon> _flashList = [
+    Icon(Icons.flash_off),
+    Icon(Icons.flash_on),
+    Icon(Icons.flash_auto),
+  ];
+
+  double? _recordScale;
+  int _flashSelected = 0;
+
+  CameraController? _cameraController;
+
+  final picker = ImagePicker();
+
+  Future getImage() async {
+    await picker.pickImage(source: ImageSource.camera);
+  }
+
+  Future getVideo() async {
+    await picker.pickVideo(source: ImageSource.camera);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -25,50 +47,50 @@ class _CameraTabState extends State<CameraTab> {
         enableAudio: false);
     checkPermission(
       context: context,
-      permissionTitle: "To capture photos and videos",
+      permissionTitle: 'To capture photos and videos',
       permissionElement: [
         Permission.camera,
         Permission.storage,
       ],
     ).then((res) async {
       switch (res) {
-        case "GRANTED":
-          _cameraController.initialize().then((_) {
+        case 'GRANTED':
+          _cameraController!.initialize().then((_) {
             if (!mounted) {
               return;
             }
             setState(() {});
           });
           break;
-        case "NOT NOW":
-          tabController.animateTo(tabController.previousIndex);
+        case 'NOT NOW':
+          tabController!.animateTo(tabController!.previousIndex);
           break;
-        case "CONTINUE":
+        case 'CONTINUE':
           await [Permission.camera, Permission.storage].request().then((value) {
             if (value.values.toList().every((element) => element.isGranted)) {
-              _cameraController.initialize().then((_) {
+              _cameraController!.initialize().then((_) {
                 if (!mounted) {
                   return;
                 }
                 setState(() {});
               });
             } else {
-              tabController.animateTo(tabController.previousIndex);
+              tabController!.animateTo(tabController!.previousIndex);
             }
           });
           break;
-        case "SETTINGS":
+        case 'SETTINGS':
           await AppSettings.openAppSettings().then((_) async {
             if (await Permission.camera.isGranted &&
                 await Permission.storage.isGranted) {
-              _cameraController.initialize().then((_) {
+              _cameraController!.initialize().then((_) {
                 if (!mounted) {
                   return;
                 }
                 setState(() {});
               });
             } else {
-              tabController.animateTo(tabController.previousIndex);
+              tabController!.animateTo(tabController!.previousIndex);
             }
           });
           break;
@@ -126,59 +148,23 @@ class _CameraTabState extends State<CameraTab> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    _cameraController?.dispose();
-  }
-
-  List<Icon> _flashList = [
-    Icon(Icons.flash_off),
-    Icon(Icons.flash_on),
-    Icon(Icons.flash_auto),
-  ];
-
-  double _recordScale;
-  int _flashSelected = 0;
-
-  CameraController _cameraController;
-
-  File _image;
-  final picker = ImagePicker();
-
-  Future getImage() async {
-    final pickedImageFile = await picker.getImage(source: ImageSource.camera);
-
-    setState(() {
-      if (pickedImageFile != null) {
-        _image = File(pickedImageFile.path);
-      } else {
-        debugPrint('No image selected.');
-      }
-    });
-  }
-
-  Future getVideo() async {
-    final pickedVideoFile = await picker.getVideo(source: ImageSource.camera);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.center,
       children: [
-        if (!_cameraController.value.isInitialized)
+        if (!_cameraController!.value.isInitialized)
           Container(
             color: Colors.black,
             width: double.infinity,
             height: double.infinity,
           ),
         CameraPreview(
-          _cameraController,
+          _cameraController!,
         ),
         Positioned(
           bottom: 10.0,
           child: Text(
-            "Hold for video, tap for photo",
+            'Hold for video, tap for photo',
             style: TextStyle(
               color: Colors.white,
             ),
@@ -218,7 +204,7 @@ class _CameraTabState extends State<CameraTab> {
               });
             },
             child: Transform.scale(
-              scale: _recordScale,
+              scale: _recordScale!,
               child: Container(
                 width: 70,
                 height: 70,
@@ -247,5 +233,11 @@ class _CameraTabState extends State<CameraTab> {
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _cameraController?.dispose();
   }
 }

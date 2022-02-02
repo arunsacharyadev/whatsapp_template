@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp_template/app_utils/color_config.dart';
+import 'package:flutter/services.dart';
+
+import 'color_config.dart';
 
 class AppTheme {
   static Color tealGreenDark = '075E54'.toHexColor();
@@ -15,24 +17,20 @@ class AppTheme {
         scaffoldBackgroundColor: '#303030'.toHexColor(),
         primaryColor: tealGreenDark,
         secondaryHeaderColor: tealGreenLight,
-        accentColor: lightGreen,
-        accentColorBrightness: Brightness.dark,
-        accentIconTheme: IconThemeData(
-          color: chatBackground,
-        ),
         appBarTheme: AppBarTheme(
-          brightness: Brightness.dark,
           color: '#424242'.toHexColor(),
           actionsIconTheme: IconThemeData(
             color: Colors.white,
           ),
+          systemOverlayStyle: SystemUiOverlayStyle.light,
         ),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: tealGreenLight,
         ),
         indicatorColor: tealGreenLight,
         toggleableActiveColor: tealGreenLight,
-        cursorColor: AppTheme.tealGreenLight,
+        textSelectionTheme:
+            TextSelectionThemeData(cursorColor: AppTheme.tealGreenLight),
       );
 
   static get lightTheme => ThemeData(
@@ -40,20 +38,16 @@ class AppTheme {
         scaffoldBackgroundColor: 'FFFFFF'.toHexColor(),
         primaryColor: tealGreenDark,
         secondaryHeaderColor: tealGreenLight,
-        accentColor: lightGreen,
-        accentIconTheme: IconThemeData(
-          color: tealGreenLight,
-        ),
-        accentColorBrightness: Brightness.light,
         appBarTheme: AppBarTheme(
-          brightness: Brightness.light,
           color: tealGreenDark,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
         ),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: lightGreen,
         ),
         indicatorColor: 'FFFFFF'.toHexColor(),
         toggleableActiveColor: tealGreenLight,
-        cursorColor: AppTheme.tealGreenLight,
+        textSelectionTheme:
+            TextSelectionThemeData(cursorColor: AppTheme.tealGreenLight),
       );
 }

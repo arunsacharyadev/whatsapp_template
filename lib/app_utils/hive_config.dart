@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -18,24 +17,24 @@ class HiveConfig {
   }
 
   static bool isBoxOpen(String name) {
-    debugPrint("isBoxOpen:\t" + Hive.isBoxOpen(name).toString());
+    debugPrint('isBoxOpen:\t' + Hive.isBoxOpen(name).toString());
     return Hive.isBoxOpen(name);
   }
 
   static Future<bool> isBoxExists(String name) async {
-    debugPrint("isBoxExists:\t" + (await Hive.boxExists(name)).toString());
+    debugPrint('isBoxExists:\t' + (await Hive.boxExists(name)).toString());
     return await Hive.boxExists(name);
   }
 
-  static hiveCreateData(String key, String value, {String name: 'settings'}) {
+  static hiveCreateData(String key, String value, {String name = 'settings'}) {
     Hive.box(name).put(key, value);
   }
 
-  static hiveReadData(String key, {String name: 'settings'}) {
+  static hiveReadData(String key, {String name = 'settings'}) {
     return Hive.box(name).get(key);
   }
 
-  static hiveReadAllData({String name: 'settings'}) {
+  static hiveReadAllData({String name = 'settings'}) {
     return Hive.box(name).toMap();
   }
 }

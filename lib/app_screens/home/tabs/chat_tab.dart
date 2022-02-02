@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp_template/app_services/chat_notifier.dart';
-import 'package:whatsapp_template/app_utils/app_theme.dart';
-import 'package:whatsapp_template/app_utils/ui_components.dart';
+
+import '../../../app_services/chat_notifier.dart';
+import '../../../app_utils/app_theme.dart';
+import '../../../app_utils/ui_components.dart';
 
 class ChatTab extends StatefulWidget {
+  const ChatTab({Key? key}) : super(key: key);
+
   @override
   _ChatTabState createState() => _ChatTabState();
 }
@@ -17,18 +20,18 @@ class _ChatTabState extends State<ChatTab> {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
               if (snapshot.hasData) {
-                List<Map<String, dynamic>> _chatData = [];
-                _chatData = snapshot.data;
+                List<Map<String, dynamic>>? _chatData = [];
+                _chatData = snapshot.data as List<Map<String, dynamic>>?;
                 return ListView.separated(
                   key: PageStorageKey('chatTabKey'),
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
-                  itemCount: _chatData.length,
+                  itemCount: _chatData!.length,
                   itemBuilder: (context, index) {
                     return BuildChatListTile(
                       context: context,
                       index: index,
-                      chatData: _chatData[index],
+                      chatData: _chatData![index],
                     );
                   },
                   separatorBuilder: (context, index) {
@@ -41,9 +44,8 @@ class _ChatTabState extends State<ChatTab> {
                   },
                 );
               } else {
-                return NoRecordsFound("No Chat Records");
+                return NoRecordsFound(message: 'No Chat Records');
               }
-              break;
             case ConnectionState.waiting:
               return Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -53,10 +55,8 @@ class _ChatTabState extends State<ChatTab> {
                   ),
                 ),
               );
-              break;
             default:
               return Container();
-              break;
           }
         });
   }

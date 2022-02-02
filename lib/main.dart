@@ -4,18 +4,19 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
-import 'package:whatsapp_template/app_screens/home/home_screen.dart';
-import 'package:whatsapp_template/app_utils/app_theme.dart';
-import 'package:whatsapp_template/app_services/theme_notifier.dart';
-import 'package:whatsapp_template/app_utils/hive_config.dart';
-import 'package:whatsapp_template/app_utils/util_functions.dart';
-import 'package:whatsapp_template/app_screens/home/tabs/camera_tab.dart';
+
+import 'app_screens/home/home_screen.dart';
+import 'app_screens/home/tabs/camera_tab.dart';
+import 'app_services/theme_notifier.dart';
+import 'app_utils/app_theme.dart';
+import 'app_utils/hive_config.dart';
+import 'app_utils/util_functions.dart';
 
 void main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
     cameras = await availableCameras();
-    await SystemChrome.setEnabledSystemUIOverlays([
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
       SystemUiOverlay.top,
       SystemUiOverlay.bottom,
     ]);
@@ -43,12 +44,14 @@ void main() async {
     ChangeNotifierProvider<ThemeNotifier>(
       create: (context) => ThemeNotifier(
           getThemeModeByIndex(HiveConfig.hiveReadData('ThemeMode'))),
-      child: MyApp(),
+      child: WhatsAppTemplateApp(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
+class WhatsAppTemplateApp extends StatelessWidget {
+  const WhatsAppTemplateApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeNotifier>(
@@ -58,14 +61,14 @@ class MyApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: themeNotifier.getThemeMode(),
-          localizationsDelegates: [
+          localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
           ],
           localeListResolutionCallback: (locale, supportedLocales) {
             return supportedLocales.first;
           },
-          supportedLocales: [
+          supportedLocales: const [
             Locale('en', 'US'),
             Locale('hi', ''),
             Locale('kn', ''),

@@ -2,31 +2,32 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:whatsapp_template/app_utils/app_theme.dart';
-import 'package:whatsapp_template/app_utils/size_config.dart';
-import 'package:whatsapp_template/app_utils/util_functions.dart';
+
+import 'app_theme.dart';
+import 'size_config.dart';
+import 'util_functions.dart';
 
 /// Build Circular Button
 class BuildCircularButton extends StatelessWidget {
   /// ## Creates a Circular Button
   const BuildCircularButton({
-    Key key,
-    this.width: 60,
-    this.height: 60,
-    this.elevation: 5.0,
-    @required this.backgroundColor,
-    @required this.icon,
-    this.iconColor: Colors.white,
+    Key? key,
+    this.width = 60,
+    this.height = 60,
+    this.elevation = 5.0,
+    required this.backgroundColor,
+    required this.icon,
+    this.iconColor = Colors.white,
     this.onPressed,
   }) : super(key: key);
 
   final double width;
   final double height;
   final double elevation;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final Icon icon;
   final Color iconColor;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class BuildCircularButton extends StatelessWidget {
           padding: EdgeInsets.zero,
           icon: icon,
           color: iconColor,
-          onPressed: onPressed != null ? onPressed : () {},
+          onPressed: onPressed ?? () {},
         ),
       ),
     );
@@ -55,9 +56,9 @@ class BuildCircularButton extends StatelessWidget {
 class BuildHeading extends StatelessWidget {
   /// ## Creates a Heading
   const BuildHeading({
-    Key key,
-    @required this.context,
-    @required this.title,
+    Key? key,
+    required this.context,
+    required this.title,
   }) : super(key: key);
   final BuildContext context;
   final String title;
@@ -66,7 +67,7 @@ class BuildHeading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20.0, 20.0, 30.0, 10.0),
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         child: Text(
           title.toString(),
@@ -85,19 +86,19 @@ class BuildHeading extends StatelessWidget {
 class BuildSwitch extends StatelessWidget {
   /// ## Creates a Switch
   const BuildSwitch({
-    Key key,
-    @required this.valueNotifier,
-    @required this.callback,
+    Key? key,
+    required this.valueNotifier,
+    required this.callback,
   }) : super(key: key);
 
-  final ValueNotifier<bool> valueNotifier;
+  final ValueNotifier<bool>? valueNotifier;
   final ValueChanged<bool> callback;
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: valueNotifier,
-      builder: (context, value, _) {
+      valueListenable: valueNotifier!,
+      builder: (context, dynamic value, _) {
         return Switch(
           inactiveThumbColor: AppTheme.chatBackground,
           activeTrackColor: AppTheme.tealGreenLight.withOpacity(0.2),
@@ -113,25 +114,25 @@ class BuildSwitch extends StatelessWidget {
 class BuildRadioListTile extends StatelessWidget {
   /// ## Creates a RadioListTile
   const BuildRadioListTile({
-    Key key,
-    @required this.title,
-    @required this.groupValueNotifier,
-    @required this.value,
-    @required this.callback,
-    this.controlAffinity: ListTileControlAffinity.leading,
+    Key? key,
+    required this.title,
+    required this.groupValueNotifier,
+    required this.value,
+    required this.callback,
+    this.controlAffinity = ListTileControlAffinity.leading,
   }) : super(key: key);
 
   final String title;
-  final ValueNotifier<dynamic> groupValueNotifier;
+  final ValueNotifier<dynamic>? groupValueNotifier;
   final dynamic value;
-  final ValueChanged<dynamic> callback;
+  final ValueChanged<dynamic>? callback;
   final ListTileControlAffinity controlAffinity;
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: groupValueNotifier,
-      builder: (context, groupValue, _) {
+      valueListenable: groupValueNotifier!,
+      builder: (context, dynamic groupValue, _) {
         return RadioListTile(
           title: Text(title.toString()),
           controlAffinity: controlAffinity,
@@ -139,8 +140,8 @@ class BuildRadioListTile extends StatelessWidget {
           groupValue: groupValue,
           onChanged: (callback != null)
               ? callback
-              : (val) {
-                  groupValueNotifier.value = val;
+              : (dynamic val) {
+                  groupValueNotifier!.value = val;
                 },
         );
       },
@@ -150,8 +151,8 @@ class BuildRadioListTile extends StatelessWidget {
 
 /// ## build PopupMenuItem
 PopupMenuItem buildPopupMenuItem({
-  @required String title,
-  VoidCallback callback,
+  required String title,
+  VoidCallback? callback,
 }) {
   return PopupMenuItem(
     child: ListTile(
@@ -166,8 +167,8 @@ PopupMenuItem buildPopupMenuItem({
 class BuildSettingsListTile extends StatelessWidget {
   /// ## Creates a Settings List Tile
   const BuildSettingsListTile({
-    Key key,
-    @required this.context,
+    Key? key,
+    required this.context,
     this.leading,
     this.leadingIcon,
     this.leadingImage,
@@ -181,14 +182,14 @@ class BuildSettingsListTile extends StatelessWidget {
         super(key: key);
 
   final BuildContext context;
-  final Widget leading;
-  final IconData leadingIcon;
-  final String leadingImage;
-  final String title;
-  final String subtitle;
-  final Widget trailing;
-  final EdgeInsetsGeometry contentPadding;
-  final GestureTapCallback callback;
+  final Widget? leading;
+  final IconData? leadingIcon;
+  final String? leadingImage;
+  final String? title;
+  final String? subtitle;
+  final Widget? trailing;
+  final EdgeInsetsGeometry? contentPadding;
+  final GestureTapCallback? callback;
 
   @override
   Widget build(BuildContext context) {
@@ -201,7 +202,7 @@ class BuildSettingsListTile extends StatelessWidget {
                   child: Icon(
                     leadingIcon,
                     size: SizeConfig.textScaleFactor * 25,
-                    color: Theme.of(context).accentIconTheme.color,
+                    color: Theme.of(context).iconTheme.color,
                   ),
                 )
               : (leadingImage != null)
@@ -209,7 +210,7 @@ class BuildSettingsListTile extends StatelessWidget {
                       aspectRatio: SizeConfig.textScaleFactor * 0.5,
                       child: SvgPicture.asset(
                         leadingImage.toString(),
-                        color: Theme.of(context).accentIconTheme.color,
+                        color: Theme.of(context).iconTheme.color,
                       ),
                     )
                   : null,
@@ -226,10 +227,10 @@ class BuildSettingsListTile extends StatelessWidget {
 class BuildChatListTile extends StatelessWidget {
   /// ## Creates a Chat List Tile
   const BuildChatListTile({
-    Key key,
-    @required this.context,
-    @required this.index,
-    @required this.chatData,
+    Key? key,
+    required this.context,
+    required this.index,
+    required this.chatData,
   }) : super(key: key);
 
   /// ## context
@@ -267,7 +268,6 @@ class BuildChatListTile extends StatelessWidget {
             color: AppTheme.greyColor,
           ),
         );
-        break;
 
       /// Delivered
       case ChatStatus.delivered:
@@ -280,7 +280,6 @@ class BuildChatListTile extends StatelessWidget {
             height: SizeConfig.textScaleFactor * 18,
           ),
         );
-        break;
 
       /// Read
       case ChatStatus.read:
@@ -293,10 +292,8 @@ class BuildChatListTile extends StatelessWidget {
             height: SizeConfig.textScaleFactor * 18,
           ),
         );
-        break;
       default:
         return Container();
-        break;
     }
   }
 
@@ -314,7 +311,6 @@ class BuildChatListTile extends StatelessWidget {
             color: AppTheme.greyColor,
           ),
         );
-        break;
 
       /// Document
       case ChatElement.document:
@@ -326,7 +322,6 @@ class BuildChatListTile extends StatelessWidget {
             color: AppTheme.greyColor,
           ),
         );
-        break;
 
       /// Video
       case ChatElement.video:
@@ -338,7 +333,6 @@ class BuildChatListTile extends StatelessWidget {
             color: AppTheme.greyColor,
           ),
         );
-        break;
 
       /// Audio
       case ChatElement.audio:
@@ -350,7 +344,6 @@ class BuildChatListTile extends StatelessWidget {
             color: AppTheme.greyColor,
           ),
         );
-        break;
 
       /// Missed voice call
       case ChatElement.missedVoiceCall:
@@ -369,7 +362,6 @@ class BuildChatListTile extends StatelessWidget {
             Text('Missed Voice Call'),
           ],
         );
-        break;
 
       /// Missed video call
       case ChatElement.missedVideoCall:
@@ -388,7 +380,6 @@ class BuildChatListTile extends StatelessWidget {
             Text('Missed Video Call'),
           ],
         );
-        break;
       default:
         return Container();
     }
@@ -447,7 +438,7 @@ class BuildChatListTile extends StatelessWidget {
                 ? true
                 : false,
             badgeColor:
-                Theme.of(context).floatingActionButtonTheme.backgroundColor,
+                Theme.of(context).floatingActionButtonTheme.backgroundColor!,
             badgeContent: Text(
               chatData['chatNotificationCount'].toString(),
               style: TextStyle(
@@ -466,10 +457,10 @@ class BuildChatListTile extends StatelessWidget {
 class BuildCallListTile extends StatelessWidget {
   /// ## Creates a Call List Tile
   const BuildCallListTile({
-    Key key,
-    @required this.context,
-    @required this.index,
-    @required this.callData,
+    Key? key,
+    required this.context,
+    required this.index,
+    required this.callData,
   }) : super(key: key);
 
   /// ## context
@@ -506,7 +497,6 @@ class BuildCallListTile extends StatelessWidget {
             color: Theme.of(context).floatingActionButtonTheme.backgroundColor,
           ),
         );
-        break;
 
       /// call received
       case CallStatus.call_received:
@@ -518,7 +508,6 @@ class BuildCallListTile extends StatelessWidget {
             color: Theme.of(context).floatingActionButtonTheme.backgroundColor,
           ),
         );
-        break;
 
       /// call missed incoming
       case CallStatus.call_missed_incoming:
@@ -530,7 +519,6 @@ class BuildCallListTile extends StatelessWidget {
             color: AppTheme.redAccent,
           ),
         );
-        break;
 
       /// call missed outgoing
       case CallStatus.call_missed_outgoing:
@@ -542,7 +530,6 @@ class BuildCallListTile extends StatelessWidget {
             color: AppTheme.redAccent,
           ),
         );
-        break;
 
       /// call merge
       case CallStatus.call_merge:
@@ -554,7 +541,6 @@ class BuildCallListTile extends StatelessWidget {
             color: Theme.of(context).floatingActionButtonTheme.backgroundColor,
           ),
         );
-        break;
 
       /// call split
       case CallStatus.call_split:
@@ -566,10 +552,8 @@ class BuildCallListTile extends StatelessWidget {
             color: Theme.of(context).floatingActionButtonTheme.backgroundColor,
           ),
         );
-        break;
       default:
         return Container();
-        break;
     }
   }
 
@@ -584,7 +568,6 @@ class BuildCallListTile extends StatelessWidget {
           size: SizeConfig.textScaleFactor * 24.0,
           color: AppTheme.tealGreenLight,
         );
-        break;
 
       /// video
       case CallType.video:
@@ -593,10 +576,8 @@ class BuildCallListTile extends StatelessWidget {
           size: SizeConfig.textScaleFactor * 24.0,
           color: AppTheme.tealGreenLight,
         );
-        break;
       default:
         return Container();
-        break;
     }
   }
 
@@ -638,12 +619,12 @@ class BuildCallListTile extends StatelessWidget {
 
 /// No Records Found
 class NoRecordsFound extends StatelessWidget {
-  /// ## No Records Found
-  const NoRecordsFound([
-    this.message = "No Records Found",
-  ]);
-
   final String message;
+
+  const NoRecordsFound({
+    Key? key,
+    this.message = 'No Records Found',
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -658,18 +639,18 @@ class NoRecordsFound extends StatelessWidget {
 
 /// Show Theme Dialog
 Future<dynamic> showThemeDialog({
-  @required BuildContext context,
-  @required ValueNotifier<dynamic> groupValueNotifier,
-  ValueChanged<dynamic> callback1,
-  ValueChanged<dynamic> callback2,
-  ValueChanged<dynamic> callback3,
+  required BuildContext context,
+  required ValueNotifier<dynamic>? groupValueNotifier,
+  ValueChanged<dynamic>? callback1,
+  ValueChanged<dynamic>? callback2,
+  ValueChanged<dynamic>? callback3,
 }) async {
   return await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           contentPadding: EdgeInsets.zero,
-          title: Text("Choose Theme"),
+          title: Text('Choose Theme'),
           content: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -677,19 +658,19 @@ Future<dynamic> showThemeDialog({
               mainAxisSize: MainAxisSize.min,
               children: [
                 BuildRadioListTile(
-                  title: "System default",
+                  title: 'System default',
                   groupValueNotifier: groupValueNotifier,
                   value: 0,
                   callback: callback1,
                 ),
                 BuildRadioListTile(
-                  title: "Light",
+                  title: 'Light',
                   groupValueNotifier: groupValueNotifier,
                   value: 1,
                   callback: callback2,
                 ),
                 BuildRadioListTile(
-                  title: "Dark",
+                  title: 'Dark',
                   groupValueNotifier: groupValueNotifier,
                   value: 2,
                   callback: callback3,
@@ -705,7 +686,7 @@ Future<dynamic> showThemeDialog({
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
                 child: Text(
-                  "CANCEL",
+                  'CANCEL',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).secondaryHeaderColor,
@@ -715,12 +696,12 @@ Future<dynamic> showThemeDialog({
             ),
             InkWell(
               onTap: () {
-                Navigator.pop(context, "OK");
+                Navigator.pop(context, 'OK');
               },
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
                 child: Text(
-                  "OK",
+                  'OK',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).secondaryHeaderColor,
@@ -735,37 +716,37 @@ Future<dynamic> showThemeDialog({
 
 /// Show Font Size Dialog
 Future<dynamic> showFontSizeDialog({
-  @required BuildContext context,
-  @required ValueNotifier<dynamic> groupValueNotifier,
-  ValueChanged<dynamic> callback1,
-  ValueChanged<dynamic> callback2,
-  ValueChanged<dynamic> callback3,
+  required BuildContext context,
+  required ValueNotifier<dynamic>? groupValueNotifier,
+  ValueChanged<dynamic>? callback1,
+  ValueChanged<dynamic>? callback2,
+  ValueChanged<dynamic>? callback3,
 }) async {
   return await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           contentPadding: EdgeInsets.zero,
-          title: Text("Font Size"),
+          title: Text('Font Size'),
           content: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 BuildRadioListTile(
-                  title: "Small",
+                  title: 'Small',
                   groupValueNotifier: groupValueNotifier,
                   value: 0,
                   callback: callback1,
                 ),
                 BuildRadioListTile(
-                  title: "Medium",
+                  title: 'Medium',
                   groupValueNotifier: groupValueNotifier,
                   value: 1,
                   callback: callback2,
                 ),
                 BuildRadioListTile(
-                  title: "Large",
+                  title: 'Large',
                   groupValueNotifier: groupValueNotifier,
                   value: 2,
                   callback: callback3,
@@ -778,10 +759,8 @@ Future<dynamic> showFontSizeDialog({
 }
 
 /// highlight Occurrences
-List<TextSpan> highlightOccurrences(String source, String query) {
-  if (query == null ||
-      query.isEmpty ||
-      !source.toLowerCase().contains(query.toLowerCase())) {
+List<TextSpan> highlightOccurrences(String? source, String query) {
+  if (query.isEmpty || !source!.toLowerCase().contains(query.toLowerCase())) {
     return [TextSpan(text: source)];
   }
   final matches = query.toLowerCase().allMatches(source.toLowerCase());
@@ -816,28 +795,28 @@ List<TextSpan> highlightOccurrences(String source, String query) {
 
 ///contact permission
 Future showContactPermission({
-  BuildContext context,
+  BuildContext? context,
 }) async {
-  String content = "";
+  String content = '';
   bool permanentlyDenied = false;
   if (await Permission.contacts.isPermanentlyDenied) {
     permanentlyDenied = true;
-    content = "To help you message friends and family on whatsApp,"
-        "allow WhatsApp access to your contacts."
-        "Tap Settings > Permissions, and turn Contacts on.";
+    content = 'To help you message friends and family on whatsApp,'
+        'allow WhatsApp access to your contacts.'
+        'Tap Settings > Permissions, and turn Contacts on.';
   } else {
     permanentlyDenied = false;
-    content = "To help you connect with friends and family,"
-        "allow WhatsApp access to your contacts.";
+    content = 'To help you connect with friends and family,'
+        'allow WhatsApp access to your contacts.';
   }
   if (await Permission.contacts.isGranted) {
-    return Future.value("GRANTED");
+    return Future.value('GRANTED');
   } else {
     return await showDialog(
-      context: context,
+      context: context!,
       barrierDismissible: false,
       builder: (context) {
-        SizeConfig()..init(context);
+        SizeConfig().init(context);
         return AlertDialog(
           titlePadding: EdgeInsets.zero,
           title: AspectRatio(
@@ -855,18 +834,16 @@ Future showContactPermission({
               ),
             ),
           ),
-          content: Text(
-            content,
-          ),
+          content: Text(content),
           actions: [
             InkWell(
               onTap: () {
-                Navigator.pop(context, "Not Now");
+                Navigator.pop(context, 'Not Now');
               },
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 15.0),
                 child: Text(
-                  "NOT NOW",
+                  'NOT NOW',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).secondaryHeaderColor,
@@ -877,12 +854,12 @@ Future showContactPermission({
             if (!permanentlyDenied)
               InkWell(
                 onTap: () {
-                  Navigator.pop(context, "CONTINUE");
+                  Navigator.pop(context, 'CONTINUE');
                 },
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 15.0),
                   child: Text(
-                    "CONTINUE",
+                    'CONTINUE',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).secondaryHeaderColor,
@@ -893,12 +870,12 @@ Future showContactPermission({
             if (permanentlyDenied)
               InkWell(
                 onTap: () {
-                  Navigator.pop(context, "SETTINGS");
+                  Navigator.pop(context, 'SETTINGS');
                 },
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 15.0),
                   child: Text(
-                    "SETTINGS",
+                    'SETTINGS',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).secondaryHeaderColor,
@@ -915,28 +892,28 @@ Future showContactPermission({
 
 ///camera permission
 Future checkCameraPermission({
-  BuildContext context,
+  BuildContext? context,
 }) async {
-  String content = "";
+  String content = '';
   bool permanentlyDenied = false;
   if (await Permission.camera.isPermanentlyDenied) {
     permanentlyDenied = true;
-    content = "To capture photos and videos,"
-        "allow WhatsApp access to your camera."
-        "Tap Settings > Permissions, and turn Camera on.";
+    content = 'To capture photos and videos,'
+        'allow WhatsApp access to your camera.'
+        'Tap Settings > Permissions, and turn Camera on.';
   } else {
     permanentlyDenied = false;
-    content = "To capture photos and videos,"
-        "allow WhatsApp access to your camera.";
+    content = 'To capture photos and videos,'
+        'allow WhatsApp access to your camera.';
   }
   if (await Permission.camera.isGranted) {
-    return Future.value("GRANTED");
+    return Future.value('GRANTED');
   } else {
     return await showDialog(
-      context: context,
+      context: context!,
       barrierDismissible: false,
       builder: (context) {
-        SizeConfig()..init(context);
+        SizeConfig().init(context);
         return AlertDialog(
           titlePadding: EdgeInsets.zero,
           title: AspectRatio(
@@ -960,12 +937,12 @@ Future checkCameraPermission({
           actions: [
             InkWell(
               onTap: () {
-                Navigator.pop(context, "NOT NOW");
+                Navigator.pop(context, 'NOT NOW');
               },
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 15.0),
                 child: Text(
-                  "NOT NOW",
+                  'NOT NOW',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).secondaryHeaderColor,
@@ -976,12 +953,12 @@ Future checkCameraPermission({
             if (!permanentlyDenied)
               InkWell(
                 onTap: () {
-                  Navigator.pop(context, "CONTINUE");
+                  Navigator.pop(context, 'CONTINUE');
                 },
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 15.0),
                   child: Text(
-                    "CONTINUE",
+                    'CONTINUE',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).secondaryHeaderColor,
@@ -992,12 +969,12 @@ Future checkCameraPermission({
             if (permanentlyDenied)
               InkWell(
                 onTap: () {
-                  Navigator.pop(context, "SETTINGS");
+                  Navigator.pop(context, 'SETTINGS');
                 },
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 15.0),
                   child: Text(
-                    "SETTINGS",
+                    'SETTINGS',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).secondaryHeaderColor,
@@ -1014,15 +991,15 @@ Future checkCameraPermission({
 
 ///show Permission Dialog
 Future showPermissionDialog({
-  @required BuildContext context,
-  @required Map<Permission, PermissionStatus> permissionStatus,
-  @required String permissionTitle,
+  required BuildContext context,
+  required Map<Permission, PermissionStatus> permissionStatus,
+  required String permissionTitle,
 }) async {
   return await showDialog(
     context: context,
     barrierDismissible: false,
     builder: (context) {
-      SizeConfig()..init(context);
+      SizeConfig().init(context);
       return AlertDialog(
         titlePadding: EdgeInsets.zero,
         title: permissionDialogTitle(permissionStatus),
@@ -1032,12 +1009,12 @@ Future showPermissionDialog({
         actions: [
           InkWell(
             onTap: () {
-              Navigator.pop(context, "NOT NOW");
+              Navigator.pop(context, 'NOT NOW');
             },
             child: Padding(
               padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 15.0),
               child: Text(
-                "NOT NOW",
+                'NOT NOW',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).secondaryHeaderColor,
@@ -1049,12 +1026,12 @@ Future showPermissionDialog({
               .contains(PermissionStatus.permanentlyDenied))
             InkWell(
               onTap: () {
-                Navigator.pop(context, "CONTINUE");
+                Navigator.pop(context, 'CONTINUE');
               },
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 15.0),
                 child: Text(
-                  "CONTINUE",
+                  'CONTINUE',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).secondaryHeaderColor,
@@ -1066,12 +1043,12 @@ Future showPermissionDialog({
               .contains(PermissionStatus.permanentlyDenied))
             InkWell(
               onTap: () {
-                Navigator.pop(context, "SETTINGS");
+                Navigator.pop(context, 'SETTINGS');
               },
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 15.0),
                 child: Text(
-                  "SETTINGS",
+                  'SETTINGS',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).secondaryHeaderColor,
@@ -1114,81 +1091,76 @@ Widget permissionDialogTitle(
                   );
                 }
 
-                switch (permissionStatus.keys.elementAt(index)) {
-                  case Permission.storage:
-                    if (index < permissionStatus.length - 1) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.folder,
-                            size: SizeConfig.textScaleFactor * 40.0,
-                            color: Colors.white,
-                          ),
-                          buildAddIcon(),
-                        ],
-                      );
-                    } else {
-                      return Icon(
-                        Icons.folder,
-                        size: SizeConfig.textScaleFactor * 40.0,
-                        color: Colors.white,
-                      );
-                    }
-                    break;
-
-                  case Permission.camera:
-                    if (index < permissionStatus.length - 1) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.camera_alt,
-                            size: SizeConfig.textScaleFactor * 40.0,
-                            color: Colors.white,
-                          ),
-                          buildAddIcon(),
-                        ],
-                      );
-                    } else {
-                      return Icon(
-                        Icons.camera_alt,
-                        size: SizeConfig.textScaleFactor * 40.0,
-                        color: Colors.white,
-                      );
-                    }
-                    break;
-
-                  case Permission.contacts:
-                    if (index < permissionStatus.length - 1) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.contacts,
-                            size: SizeConfig.textScaleFactor * 40.0,
-                            color: Colors.white,
-                          ),
-                          buildAddIcon(),
-                        ],
-                      );
-                    } else {
-                      return Icon(
-                        Icons.contacts,
-                        size: SizeConfig.textScaleFactor * 40.0,
-                        color: Colors.white,
-                      );
-                    }
-                    break;
-                  default:
-                    return Container();
-                    break;
+                var _permission = permissionStatus.keys.elementAt(index);
+                debugPrint('_permission:\t$_permission');
+                if (_permission == Permission.storage) {
+                  if (index < permissionStatus.length - 1) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.folder,
+                          size: SizeConfig.textScaleFactor * 40.0,
+                          color: Colors.white,
+                        ),
+                        buildAddIcon(),
+                      ],
+                    );
+                  } else {
+                    return Icon(
+                      Icons.folder,
+                      size: SizeConfig.textScaleFactor * 40.0,
+                      color: Colors.white,
+                    );
+                  }
+                } else if (_permission == Permission.camera) {
+                  if (index < permissionStatus.length - 1) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.camera_alt,
+                          size: SizeConfig.textScaleFactor * 40.0,
+                          color: Colors.white,
+                        ),
+                        buildAddIcon(),
+                      ],
+                    );
+                  } else {
+                    return Icon(
+                      Icons.camera_alt,
+                      size: SizeConfig.textScaleFactor * 40.0,
+                      color: Colors.white,
+                    );
+                  }
+                } else if (_permission == Permission.contacts) {
+                  if (index < permissionStatus.length - 1) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.contacts,
+                          size: SizeConfig.textScaleFactor * 40.0,
+                          color: Colors.white,
+                        ),
+                        buildAddIcon(),
+                      ],
+                    );
+                  } else {
+                    return Icon(
+                      Icons.contacts,
+                      size: SizeConfig.textScaleFactor * 40.0,
+                      color: Colors.white,
+                    );
+                  }
+                } else {
+                  return Container();
                 }
               } else {
                 return Container();

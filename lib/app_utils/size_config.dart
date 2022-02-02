@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class SizeConfig {
-  static double screenWidth;
-  static double screenHeight;
-  static Orientation screenOrientation;
-  static double textScaleFactor;
+  static double? screenWidth;
+  static double? screenHeight;
+  static Orientation? screenOrientation;
+  static late double textScaleFactor;
   void init(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp_template/app_services/status_notifier.dart';
-import 'package:whatsapp_template/app_utils/app_theme.dart';
-import 'package:whatsapp_template/app_utils/size_config.dart';
-import 'package:whatsapp_template/app_utils/ui_components.dart';
+
+import '../../../app_services/status_notifier.dart';
+import '../../../app_utils/app_theme.dart';
+import '../../../app_utils/size_config.dart';
+import '../../../app_utils/ui_components.dart';
 
 class StatusTab extends StatefulWidget {
+  const StatusTab({Key? key}) : super(key: key);
+
   @override
   _StatusTabState createState() => _StatusTabState();
 }
@@ -18,17 +21,17 @@ class _StatusTabState extends State<StatusTab> {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
               if (snapshot.hasData) {
-                Map<String, dynamic> _statusData = {};
-                Map<String, dynamic> _myStatus = {};
-                List<Map<String, dynamic>> _recentUpdates = [];
-                List<Map<String, dynamic>> _viewedUpdates = [];
-                _statusData = snapshot.data;
-                _myStatus = _statusData['my_status'];
+                Map<String, dynamic>? _statusData = {};
+                Map<String, dynamic>? _myStatus = {};
+                List<Map<String, dynamic>>? _recentUpdates = [];
+                List<Map<String, dynamic>>? _viewedUpdates = [];
+                _statusData = snapshot.data as Map<String, dynamic>?;
+                _myStatus = _statusData!['my_status'];
                 _recentUpdates = _statusData['recent_updates'];
                 _viewedUpdates = _statusData['viewed_updates'];
 
                 return ListView(
-                  key: PageStorageKey("statusTabKey"),
+                  key: PageStorageKey('statusTabKey'),
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
                   children: [
@@ -38,12 +41,12 @@ class _StatusTabState extends State<StatusTab> {
                         absorbing: true,
                         ignoringSemantics: false,
                         child: Stack(
+                          clipBehavior: Clip.none,
                           alignment: Alignment.center,
-                          overflow: Overflow.visible,
                           children: [
                             CircleAvatar(
                               backgroundColor: Colors.grey,
-                              backgroundImage: (_myStatus['statusPic']
+                              backgroundImage: (_myStatus!['statusPic']
                                       .toString()
                                       .isNotEmpty)
                                   ? AssetImage('${_myStatus['statusPic']}')
@@ -69,12 +72,12 @@ class _StatusTabState extends State<StatusTab> {
                       ),
                       title: Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text("My Status"),
+                        child: Text('My Status'),
                       ),
                       subtitle: Text(
                           (_myStatus['StatusTime'].toString().isNotEmpty)
                               ? _myStatus['StatusTime'].toString()
-                              : "Tap to add status update"),
+                              : 'Tap to add status update'),
                       onTap: () {},
                     ),
                     Container(
@@ -86,7 +89,7 @@ class _StatusTabState extends State<StatusTab> {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
                         child: Text(
-                          "Recent updates",
+                          'Recent updates',
                           style: TextStyle(
                             color: (Theme.of(context).brightness ==
                                     Brightness.light)
@@ -101,14 +104,14 @@ class _StatusTabState extends State<StatusTab> {
                     ListView.separated(
                       shrinkWrap: true,
                       controller: ScrollController(),
-                      itemCount: _recentUpdates.length,
+                      itemCount: _recentUpdates!.length,
                       itemBuilder: (context, index) {
                         return ListTile(
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 10.0),
                           leading: CircleAvatar(
                             backgroundColor: Colors.grey,
-                            backgroundImage: (_recentUpdates[index]
+                            backgroundImage: (_recentUpdates![index]
                                         ['contactStatusPic']
                                     .toString()
                                     .isNotEmpty)
@@ -143,7 +146,7 @@ class _StatusTabState extends State<StatusTab> {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
                         child: Text(
-                          "Viewed updates",
+                          'Viewed updates',
                           style: TextStyle(
                             color: (Theme.of(context).brightness ==
                                     Brightness.light)
@@ -158,14 +161,14 @@ class _StatusTabState extends State<StatusTab> {
                     ListView.separated(
                       shrinkWrap: true,
                       controller: ScrollController(),
-                      itemCount: _viewedUpdates.length,
+                      itemCount: _viewedUpdates!.length,
                       itemBuilder: (context, index) {
                         return ListTile(
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 10.0),
                           leading: CircleAvatar(
                             backgroundColor: Colors.grey,
-                            backgroundImage: (_viewedUpdates[index]
+                            backgroundImage: (_viewedUpdates![index]
                                         ['contactStatusPic']
                                     .toString()
                                     .isNotEmpty)
@@ -194,9 +197,8 @@ class _StatusTabState extends State<StatusTab> {
                   ],
                 );
               } else {
-                return NoRecordsFound("No Status Records");
+                return NoRecordsFound(message: 'No Status Records');
               }
-              break;
             case ConnectionState.waiting:
               return Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -206,10 +208,8 @@ class _StatusTabState extends State<StatusTab> {
                   ),
                 ),
               );
-              break;
             default:
               return Container();
-              break;
           }
         });
   }

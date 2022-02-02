@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:whatsapp_template/app_utils/ui_components.dart';
+
+import 'ui_components.dart';
 
 enum TabAction { camera, chat, status, call }
 
@@ -19,11 +20,17 @@ enum ChatElement {
 }
 
 enum CallStatus {
+  // ignore: constant_identifier_names
   call_made,
+  // ignore: constant_identifier_names
   call_received,
+  // ignore: constant_identifier_names
   call_missed_incoming,
+  // ignore: constant_identifier_names
   call_missed_outgoing,
+  // ignore: constant_identifier_names
   call_merge,
+  // ignore: constant_identifier_names
   call_split,
 }
 
@@ -33,7 +40,7 @@ enum CallType {
 }
 
 /// ## Print logError
-void logError({String code, String description, StackTrace stackTrace}) {
+void logError({String? code, String? description, StackTrace? stackTrace}) {
   debugPrint(
       "Exception\t ${(code != null) ? "Code: $code" : ""} ${(description != null) ? "\tMessage: $description" : ""} ${(stackTrace != null) ? "\tStackTrace: $stackTrace" : ""}");
 }
@@ -43,16 +50,12 @@ ThemeMode getThemeModeByIndex(index) {
   switch (int.parse(index.toString())) {
     case 0:
       return ThemeMode.system;
-      break;
     case 1:
       return ThemeMode.light;
-      break;
     case 2:
       return ThemeMode.dark;
-      break;
     default:
       return ThemeMode.system;
-      break;
   }
 }
 
@@ -61,19 +64,14 @@ TabAction getTabActionByIndex(int index) {
   switch (index) {
     case 0:
       return TabAction.camera;
-      break;
     case 1:
       return TabAction.chat;
-      break;
     case 2:
       return TabAction.status;
-      break;
     case 3:
       return TabAction.call;
-      break;
     default:
       return TabAction.chat;
-      break;
   }
 }
 
@@ -104,7 +102,7 @@ double getRadiansFromDegree(double degree) {
 /// ```
 String cNumeric(input) {
   if (isNumeric(input)) {
-    return "0";
+    return '0';
   } else {
     return input.toString();
   }
@@ -133,25 +131,25 @@ bool isNumeric(input) {
 
 String flattenPhoneNumber(String number) {
   return number.replaceAllMapped(RegExp(r'^(\+)|\D'), (Match m) {
-    return m[0] == "+" ? "+" : "";
+    return m[0] == '+' ? '+' : '';
   });
 }
 
 ///check Permission
 Future checkPermission({
-  @required BuildContext context,
-  @required List<Permission> permissionElement,
-  @required String permissionTitle,
+  required BuildContext context,
+  required List<Permission> permissionElement,
+  required String permissionTitle,
 }) async {
   Map<Permission, PermissionStatus> permissionStatus =
-      Map<Permission, PermissionStatus>();
+      <Permission, PermissionStatus>{};
   for (var element in permissionElement) {
     permissionStatus.addAll({
       element: await element.status,
     });
   }
   if (permissionStatus.values.every((element) => element.isGranted)) {
-    return "GRANTED";
+    return 'GRANTED';
   } else {
     return await showPermissionDialog(
       context: context,
@@ -166,61 +164,55 @@ String getPermissionDialogContent(
   String permissionTitle,
   Map<Permission, PermissionStatus> permissionStatus,
 ) {
-  String content = permissionTitle + ", allow WhatsApp access to ";
-  String storageTitle = "Storage";
+  String content = permissionTitle + ', allow WhatsApp access to ';
+  String storageTitle = 'Storage';
   String storageDescription = "device's photos, media, and files";
-  String cameraTitle = "Camera";
-  String cameraDescription = "camera";
-  String contactTitle = "Contact";
-  String contactDescription = "contacts";
+  String cameraTitle = 'Camera';
+  String cameraDescription = 'camera';
+  String contactTitle = 'Contact';
+  String contactDescription = 'contacts';
   List<String> tempDescription = [];
   permissionStatus.forEach((key, value) {
     if (value != PermissionStatus.granted) {
-      switch (key) {
-        case Permission.storage:
-          tempDescription.add("your " + storageDescription);
-          break;
-        case Permission.camera:
-          tempDescription.add("your " + cameraDescription);
-          break;
-        case Permission.contacts:
-          tempDescription.add("your " + contactDescription);
-          break;
-        default:
-          break;
+      if (key == Permission.storage) {
+        tempDescription.add('your ' + storageDescription);
+      } else if (key == Permission.camera) {
+        tempDescription.add('your ' + cameraDescription);
+      } else if (key == Permission.contacts) {
+        tempDescription.add('your ' + contactDescription);
       }
     }
   });
   content = content +
-      "${(tempDescription.isNotEmpty && tempDescription.length > 1) ? tempDescription.sublist(0, tempDescription.length - 1).join(", ") : ""}" +
-      "${(tempDescription.isNotEmpty && tempDescription.length > 1) ? " add " : ""}" +
+      ((tempDescription.isNotEmpty && tempDescription.length > 1)
+          ? tempDescription.sublist(0, tempDescription.length - 1).join(', ')
+          : '') +
+      ((tempDescription.isNotEmpty && tempDescription.length > 1)
+          ? ' add '
+          : '') +
       tempDescription.last +
-      ".";
+      '.';
   if (permissionStatus.values.contains(PermissionStatus.permanentlyDenied)) {
-    content = content + " Tap Settings > Permissions, and turn ";
+    content = content + ' Tap Settings > Permissions, and turn ';
     List<String> tempTitle = [];
     permissionStatus.forEach((key, value) {
       if (value != PermissionStatus.granted) {
-        switch (key) {
-          case Permission.storage:
-            tempTitle.add(storageTitle + " on");
-            break;
-          case Permission.camera:
-            tempTitle.add(cameraTitle + " on");
-            break;
-          case Permission.contacts:
-            tempTitle.add(contactTitle + " on");
-            break;
-          default:
-            break;
+        if (key == Permission.storage) {
+          tempTitle.add(storageTitle + ' on');
+        } else if (key == Permission.camera) {
+          tempTitle.add(cameraTitle + ' on');
+        } else if (key == Permission.contacts) {
+          tempTitle.add(contactTitle + ' on');
         }
       }
     });
     content = content +
-        "${(tempTitle.isNotEmpty && tempTitle.length > 1) ? tempTitle.sublist(0, tempTitle.length - 1).join(", ") : ""}" +
-        "${(tempTitle.isNotEmpty && tempTitle.length > 1) ? " and " : ""}" +
+        ((tempTitle.isNotEmpty && tempTitle.length > 1)
+            ? tempTitle.sublist(0, tempTitle.length - 1).join(', ')
+            : '') +
+        ((tempTitle.isNotEmpty && tempTitle.length > 1) ? ' and ' : '') +
         tempTitle.last +
-        ".";
+        '.';
   }
   return content;
 }

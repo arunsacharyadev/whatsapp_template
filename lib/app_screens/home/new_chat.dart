@@ -1,28 +1,20 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:whatsapp_template/app_utils/app_theme.dart';
-import 'package:whatsapp_template/app_utils/size_config.dart';
-import 'package:whatsapp_template/app_utils/ui_components.dart';
-import 'package:whatsapp_template/app_utils/util_functions.dart';
+
+import '../../app_utils/app_theme.dart';
+import '../../app_utils/size_config.dart';
+import '../../app_utils/ui_components.dart';
+import '../../app_utils/util_functions.dart';
 
 class NewChat extends StatefulWidget {
+  const NewChat({Key? key}) : super(key: key);
+
   @override
   _NewChatState createState() => _NewChatState();
 }
 
 class _NewChatState extends State<NewChat> {
-  @override
-  void initState() {
-    super.initState();
-    _contactCount = ValueNotifier<int>(0);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   Future _getContacts() async {
     List<Contact> contacts = (await ContactsService.getContacts()).toList();
     _contactCount.value = contacts.length;
@@ -31,7 +23,13 @@ class _NewChatState extends State<NewChat> {
   }
 
   List<Contact> contactsData = [];
-  ValueNotifier<int> _contactCount;
+  late ValueNotifier<int> _contactCount;
+
+  @override
+  void initState() {
+    super.initState();
+    _contactCount = ValueNotifier<int>(0);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +41,9 @@ class _NewChatState extends State<NewChat> {
           children: [
             ValueListenableBuilder(
               valueListenable: _contactCount,
-              builder: (context, count, _) {
+              builder: (context, dynamic count, _) {
                 return Container(
-                  color: Theme.of(context).appBarTheme.color,
+                  color: Theme.of(context).appBarTheme.backgroundColor,
                   child: ListTile(
                     contentPadding: EdgeInsets.zero,
                     leading: IconButton(
@@ -59,7 +57,7 @@ class _NewChatState extends State<NewChat> {
                       },
                     ),
                     title: Text(
-                      "Select contact",
+                      'Select contact',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -68,7 +66,7 @@ class _NewChatState extends State<NewChat> {
                     ),
                     subtitle: (count > 0)
                         ? Text(
-                            "$count contacts",
+                            '$count contacts',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 15,
@@ -120,12 +118,11 @@ class _NewChatState extends State<NewChat> {
                           ),
                         ),
                       );
-                      break;
 
                     case ConnectionState.done:
-                      List<Contact> contactList = [];
+                      List<Contact>? contactList = [];
                       if (snapshot.hasData) {
-                        contactList = snapshot.data;
+                        contactList = snapshot.data as List<Contact>?;
                       }
                       return ListView(
                         shrinkWrap: true,
@@ -142,7 +139,7 @@ class _NewChatState extends State<NewChat> {
                                 color: Colors.white,
                               ),
                             ),
-                            title: Text("New group"),
+                            title: Text('New group'),
                           ),
                           ListTile(
                             leading: CircleAvatar(
@@ -156,7 +153,7 @@ class _NewChatState extends State<NewChat> {
                                 color: Colors.white,
                               ),
                             ),
-                            title: Text("New Contact"),
+                            title: Text('New Contact'),
                             trailing: Icon(
                               Icons.qr_code,
                               size: SizeConfig.textScaleFactor * 25,
@@ -165,20 +162,20 @@ class _NewChatState extends State<NewChat> {
                                   .backgroundColor,
                             ),
                           ),
-                          if (contactList.isNotEmpty)
+                          if (contactList!.isNotEmpty)
                             ListView.builder(
                               shrinkWrap: true,
                               itemCount: contactList.length,
                               itemBuilder: (context, index) {
-                                Contact data = contactList[index];
+                                Contact data = contactList![index];
                                 return ListTile(
                                   leading: (data.avatar != null &&
-                                          data.avatar.isNotEmpty)
+                                          data.avatar!.isNotEmpty)
                                       ? CircleAvatar(
                                           radius:
                                               SizeConfig.textScaleFactor * 20.0,
                                           backgroundImage:
-                                              MemoryImage(data.avatar),
+                                              MemoryImage(data.avatar!),
                                         )
                                       : CircleAvatar(
                                           radius:
@@ -194,9 +191,9 @@ class _NewChatState extends State<NewChat> {
                                             ),
                                           ),
                                         ),
-                                  title: Text(data.displayName),
+                                  title: Text(data.displayName!),
                                   subtitle: Text(
-                                    "Hey there! I am using WhatsApp",
+                                    'Hey there! I am using WhatsApp',
                                   ),
                                 );
                               },
@@ -204,29 +201,27 @@ class _NewChatState extends State<NewChat> {
                           if (contactList.isEmpty)
                             ListTile(
                               contentPadding: EdgeInsets.only(left: 70.0),
-                              title: Text("No WhatsApp contacts"),
+                              title: Text('No WhatsApp contacts'),
                             ),
                           ListTile(
                             leading: Icon(
                               Icons.share,
                               size: SizeConfig.textScaleFactor * 25,
                             ),
-                            title: Text("Invite friends"),
+                            title: Text('Invite friends'),
                           ),
                           ListTile(
                             leading: Icon(
                               Icons.help,
                               size: SizeConfig.textScaleFactor * 25,
                             ),
-                            title: Text("Contacts help"),
+                            title: Text('Contacts help'),
                           ),
                         ],
                       );
-                      break;
 
                     default:
                       return Container();
-                      break;
                   }
                 },
               ),
@@ -236,14 +231,19 @@ class _NewChatState extends State<NewChat> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 }
 
 class SearchContact extends SearchDelegate {
   final List<Contact> contactList;
 
   SearchContact({
-    String hintText = "Search...",
-    @required this.contactList,
+    String hintText = 'Search...',
+    required this.contactList,
   }) : super(
           searchFieldLabel: hintText,
         );
@@ -251,13 +251,15 @@ class SearchContact extends SearchDelegate {
   get _getFilteredContacts {
     List<Contact> filteredContacts = [];
     filteredContacts.addAll(contactList);
-    if (query != null && query.isNotEmpty) {
+    if (query.isNotEmpty) {
       filteredContacts.retainWhere((element) {
-        var phone = element.phones.firstWhere((element) {
-          return flattenPhoneNumber(element.value).contains(query);
-        }, orElse: () => null);
-        if (query != null && query.isNotEmpty) {
-          if (element.displayName.toLowerCase().contains(query.toLowerCase())) {
+        var phone = element.phones!.firstWhereOrNull((element) {
+          return flattenPhoneNumber(element.value!).contains(query);
+        });
+        if (query.isNotEmpty) {
+          if (element.displayName!
+              .toLowerCase()
+              .contains(query.toLowerCase())) {
             return true;
           } else if (phone != null) {
             return true;
@@ -272,7 +274,7 @@ class SearchContact extends SearchDelegate {
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
-      if (query != null && query.isNotEmpty)
+      if (query.isNotEmpty)
         IconButton(
           icon: Icon(Icons.close),
           color: Theme.of(context).brightness == Brightness.light
@@ -307,10 +309,10 @@ class SearchContact extends SearchDelegate {
       itemBuilder: (context, index) {
         Contact data = resultList[index];
         return ListTile(
-          leading: (data.avatar != null && data.avatar.isNotEmpty)
+          leading: (data.avatar != null && data.avatar!.isNotEmpty)
               ? CircleAvatar(
                   radius: SizeConfig.textScaleFactor * 24.0,
-                  backgroundImage: MemoryImage(data.avatar),
+                  backgroundImage: MemoryImage(data.avatar!),
                 )
               : CircleAvatar(
                   radius: SizeConfig.textScaleFactor * 24.0,
@@ -323,9 +325,9 @@ class SearchContact extends SearchDelegate {
                     ),
                   ),
                 ),
-          title: Text(data.displayName),
+          title: Text(data.displayName!),
           subtitle: Text(
-            "Hey there! I am using WhatsApp",
+            'Hey there! I am using WhatsApp',
           ),
         );
       },
@@ -343,33 +345,30 @@ class SearchContact extends SearchDelegate {
         itemBuilder: (context, index) {
           Contact data = suggestionList[index];
           return ListTile(
-            leading: (data.avatar != null && data.avatar.isNotEmpty)
+            leading: (data.avatar != null && data.avatar!.isNotEmpty)
                 ? CircleAvatar(
-              radius: SizeConfig.textScaleFactor * 20.0,
-              backgroundImage: MemoryImage(data.avatar),
-            )
+                    radius: SizeConfig.textScaleFactor * 20.0,
+                    backgroundImage: MemoryImage(data.avatar!),
+                  )
                 : CircleAvatar(
-              radius: SizeConfig.textScaleFactor * 20.0,
-              backgroundColor: Colors.grey,
-              child: Text(
-                data.initials().toString(),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: SizeConfig.textScaleFactor * 25,
-                ),
-              ),
-            ),
+                    radius: SizeConfig.textScaleFactor * 20.0,
+                    backgroundColor: Colors.grey,
+                    child: Text(
+                      data.initials().toString(),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: SizeConfig.textScaleFactor * 25,
+                      ),
+                    ),
+                  ),
             title: RichText(
               text: TextSpan(
                 children: highlightOccurrences(data.displayName, query),
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .body1,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
             subtitle: Text(
-              "Hey there! I am using WhatsApp",
+              'Hey there! I am using WhatsApp',
             ),
           );
         },
@@ -386,13 +385,13 @@ class SearchContact extends SearchDelegate {
             leading: Icon(
               Icons.share,
             ),
-            title: Text("Invite friends"),
+            title: Text('Invite friends'),
           ),
           ListTile(
             leading: Icon(
               Icons.help,
             ),
-            title: Text("Contacts help"),
+            title: Text('Contacts help'),
           ),
         ],
       );
@@ -406,7 +405,7 @@ class SearchContact extends SearchDelegate {
           ? Colors.white
           : Colors.grey.withOpacity(0.5),
       inputDecorationTheme: InputDecorationTheme(
-        hintStyle: Theme.of(context).textTheme.title.copyWith(
+        hintStyle: Theme.of(context).textTheme.headline6!.copyWith(
               color: Colors.grey,
             ),
       ),
